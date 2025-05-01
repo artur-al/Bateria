@@ -56,7 +56,9 @@ main {
   transition: 0.3s;
 }
 
-.terceira{
-  cursor: url('../assets/baquetaTerceira.png'), auto;
-  border: 2px solid #000;
+/* .card.terceira img:hover {
+  cursor: url('../assets/baqueta.png'), auto;
+} */
+#terceira:hover{
+  cursor: url('../assets/baqueta.png') auto;
 }
