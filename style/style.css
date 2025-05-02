@@ -56,9 +56,10 @@ main {
   transition: 0.3s;
 }
 
-/* .card.terceira img:hover {
-  cursor: url('../assets/baqueta.png'), auto;
-} */
+#caixa:hover{
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+}
+
 #terceira:hover{
-  cursor: url('../assets/baqueta.png') auto;
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
 }
