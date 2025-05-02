@@ -129,6 +129,64 @@ main {
   cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
+.card.tamborim img{
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+}
+
 #terceira:hover {
   cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
 }
+
+.imagem-interativa {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.imagem-interativa img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.imagem-interativa {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.imagem-interativa img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Estilo das zonas interativas */
+.zona {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  z-index: 10;
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+  /* TEMPORÁRIO: fundo visível para teste */
+  background-color: rgba(255, 0, 0, 0.1); 
+}
+
+.zona1 {
+  top: 0;
+  left: 0;
+}
+.zona2 {
+  top: 0;
+  left: 50%;
+}
+.zona3 {
+  top: 50%;
+  left: 0;
+}
+.zona4 {
+  top: 50%;
+  left: 50%;
+}
+

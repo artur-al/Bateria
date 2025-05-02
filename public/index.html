@@ -55,8 +55,15 @@
             </div>
             <div class="cards-container">
                 <div class="card agogo">
-                  <img src="../assets/agogo.webp" alt="agogo" id="caixa">
-                </div>
+                    <div class="imagem-interativa">
+                      <img src="../assets/agogo.webp" alt="agogo" id="agogozona">
+                      <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
+                      <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
+                      <div class="zona zona3" onclick="tocarSom('agogo3')"></div>
+                      <!-- <div class="zona zona4" onclick="tocarSom('agogo4')"></div>                       -->
+                    </div>
+                  </div>
+                  
                 <div class="card caixa">
                   <img src="../assets/caixa3.png" alt="caixa" id="caixa">
                 </div>
@@ -70,7 +77,7 @@
                   <img src="../assets/segunda.png" alt="segunda" id="terceira">
                 </div>
                 <div class="card tamborim">
-                  <img src="../assets/tamborim.png" alt="tamborim" id="caixa">
+                  <img src="../assets/tamborim.png" alt="tamborim">
                 </div>
                 <div class="card terceira">
                   <img src="../assets/terceira.png" alt="terceira" id="terceira">
@@ -79,6 +86,19 @@
         </section>
     </main>
     <script src="mobile-navbar.js"></script>
+    <audio src="../assets/agogo 1.mp3" id="agogo1"></audio>
+    <audio src="../assets/agogo 2.mp3" id="agogo2"></audio>
+    <audio src="../assets/agogo 3.mp3" id="agogo3"></audio>
 </body>
 
 </html>
+<script>
+    function tocarSom(id) {
+      const som = document.getElementById(id);
+      if (som) {
+        som.currentTime = 0; // reinicia o áudio
+        som.play();
+      }
+    }
+  </script>
+  
