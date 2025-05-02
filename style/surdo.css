@@ -9,6 +9,17 @@
     color: #333;
   }
   
+  .surdo h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em;
+    color: #1a1a1a;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #23232e;
+  }
+
   .surdo h3 {
     font-size: 1.5em;
     color: #1a1a1a;
@@ -32,4 +43,160 @@
   .surdo li {
     margin-bottom: 0.5em;
   }
+
+  .caixa{
+    margin: 20px auto;
+    padding: 2em;
+    max-width: 1000px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .caixa h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em;
+    color: #1a1a1a;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #23232e;
+  }
+
+  .caixa h3{
+    font-size: 1.5em;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    border-left: 4px solid #23232e;
+    padding-left: 10px;
+  }
+
+  .caixa ul {
+    padding-left: 1.5em;
+    margin-top: 1em;
+  }
   
+  .caixa li {
+    margin-bottom: 0.5em;
+  }
+
+  .caixa p{
+    font-size: 1em;
+    margin: 1em 0;
+    text-align: justify;
+    line-height: 1.6;
+  }
+
+  .agogo{
+    margin: 20px auto;
+    padding: 2em;
+    max-width: 1000px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .agogo h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em;
+    color: #1a1a1a;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #23232e;
+  }
+
+  .agogo h3{
+    font-size: 1.5em;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    border-left: 4px solid #23232e;
+    padding-left: 10px;
+  }
+
+  .agogo p{
+    font-size: 1em;
+    margin: 1em 0;
+    text-align: justify;
+    line-height: 1.6;
+  }
+
+  .chocalho{
+    margin: 20px auto;
+    padding: 2em;
+    max-width: 1000px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .chocalho h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em;
+    color: #1a1a1a;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #23232e;
+  }
+
+  .chocalho h3{
+    font-size: 1.5em;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    border-left: 4px solid #23232e;
+    padding-left: 10px;
+  }
+
+  .chocalho p{
+    font-size: 1em;
+    margin: 1em 0;
+    text-align: justify;
+    line-height: 1.6;
+  }
+
+  .tamobrim{
+    margin: 20px auto;
+    padding: 2em;
+    max-width: 1000px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .tamobrim h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em;
+    color: #1a1a1a;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #23232e;
+  }
+
+  .tamobrim h3{
+    font-size: 1.5em;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    border-left: 4px solid #23232e;
+    padding-left: 10px;
+  }
+
+  .tamobrim p{
+    font-size: 1em;
+    margin: 1em 0;
+    text-align: justify;
+    line-height: 1.6;
+  }
