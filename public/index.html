@@ -65,13 +65,14 @@
                   </div>
                   
                 <div class="card caixa">
-                  <img src="../assets/caixa3.png" alt="caixa" id="caixa">
+                  <img src="../assets/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
                 </div>
                 <div class="card">
                   <img src="../assets/chocalho.png" alt="chocalho">
                 </div>
                 <div class="card primeira">
-                  <img src="../assets/primeira2.png" alt="primeira" id="terceira">
+                  <img src="../assets/primeira2.png" alt="primeira" id="terceira"  onclick="tocarSom('surdo1abafado')">
+                  <!-- <div class="zona zona1" onclick="tocarSom('surdo1')"></div> -->
                 </div>
                 <div class="card segunda">
                   <img src="../assets/segunda.png" alt="segunda" id="terceira">
@@ -89,6 +90,9 @@
     <audio src="../assets/agogo 1.mp3" id="agogo1"></audio>
     <audio src="../assets/agogo 2.mp3" id="agogo2"></audio>
     <audio src="../assets/agogo 3.mp3" id="agogo3"></audio>
+    <audio src="../assets/surdo1.mp3" id="surdo1"></audio>
+    <audio src="../assets/surdo1abafada.mp3" id="surdo1abafado"></audio>
+    <audio src="../assets/caixa.mp3" id="caixa1"></audio>
 </body>
 
 </html>
@@ -96,7 +100,7 @@
     function tocarSom(id) {
       const som = document.getElementById(id);
       if (som) {
-        som.currentTime = 0; // reinicia o áudio
+        som.currentTime = 0; 
         som.play();
       }
     }
