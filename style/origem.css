@@ -1,5 +1,5 @@
 :root{
-    --fundo:#eee;
+    --fundo: #e1dad0;
 }
 
 *{
@@ -22,7 +22,7 @@ body{
     margin: 1%;
 } */
 
-.cards{
+.cards {
     position: relative;
     display: flex;
     justify-content: center;
@@ -31,7 +31,7 @@ body{
     gap: 60px;
 }
 
-.cards .card{
+.cards .card {
     position: relative;
     width: 320px;
     height: 350px;
@@ -45,26 +45,26 @@ body{
     transition: 0.5s;
 }
 
-.cards .card:hover{
-    width: 350px;
-    height: 400px;
+.cards .card:hover {
+    width: 500px;
+    height: 660px;
 }
 
-.cards .card .imgBox{
+.cards .card .imgBox {
     position: absolute;
     inset: 20px 20px 50px 20px;
-    background: #000;
+    background: #555;
     border-radius: 15px;
     transition: 0.5s;
     z-index: 1000;
 }
 
-.cards .card:hover .imgBox{
+.cards .card:hover .imgBox {
     inset: -50px 60px 250px 60px;
     box-shadow: 0 0 0 10px var(--fundo);
 }
 
-.cards .card .imgBox::before{
+.cards .card .imgBox::before {
     content: '';
     position: absolute;
     width: 20px;
@@ -78,12 +78,13 @@ body{
     pointer-events: none;
     transition: 0.5s;
 }
-.cards .card:hover .imgBox::before{
+
+.cards .card:hover .imgBox::before {
     opacity: 1;
     transform: translateY(50px);
 }
 
-.cards .card .imgBox::after{
+.cards .card .imgBox::after {
     content: '';
     position: absolute;
     width: 20px;
@@ -97,12 +98,13 @@ body{
     pointer-events: none;
     transition: 0.5s;
 }
-.cards .card:hover .imgBox::after{
+
+.cards .card:hover .imgBox::after {
     opacity: 1;
     transform: translateY(50px);
 }
 
-.cards .card .imgBox img{
+.cards .card .imgBox img {
     position: absolute;
     top: 0;
     left: 0;
@@ -111,23 +113,23 @@ body{
     object-fit: cover;
 }
 
-.cards .card p{
+.cards .card p {
     position: relative;
     padding: 40px;
     text-align: center;
     opacity: 0;
-    visibility: hidden; 
+    visibility: hidden;
     transform: translateY(-50px);
     transition: 0.5s;
 }
 
-.cards .card:hover p{
+.cards .card:hover p {
     opacity: 1;
     visibility: visible;
-    transform: translateY(40px);
+    transform: translateY(200px);
 }
 
-.cards .card h2{
+.cards .card h2 {
     position: absolute;
     bottom: 8px;
     color: #000;
@@ -136,11 +138,30 @@ body{
     transition: 0.5s;
 }
 
-.cards .card:hover h2{
+.cards .card:hover h2 {
     padding: 5px 25px;
-    background: #000;
+    background: #005C4B;
     color: #fff;
     bottom: -25px;
     border-radius: 15px;
     box-shadow: 0 0 0 10px var(--fundo);
 }
+
+.rodape {
+    background-color: #000; 
+    color: #fff;            
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 40px;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .rodape p {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  
