@@ -34,8 +34,8 @@ create table levada(
 
 create table nota(
 	idNota int primary key auto_increment,
-    tempo decimal(5,2) not null, -- o momento da nota, tipo 1.25 segundos
-    intensidade int not null, -- tipo força da batida (0 a 100)
+    tempo decimal(5,2) not null, 
+    intensidade int not null, 
     fkInstrumento int,
     fkLevada int,
     constraint fkNotaInstrumento foreign key (fkInstrumento)
