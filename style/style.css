@@ -189,4 +189,16 @@ main {
   top: 50%;
   left: 50%;
 }
+body::-webkit-scrollbar {
+  width: 1vh;
+}
 
+body::-webkit-scrollbar-track {
+  background: #000;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 12vh;
+  border: 4vh solid #fff;
+}
