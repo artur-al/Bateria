@@ -9,9 +9,9 @@ create table agremiacao(
 create table usuario(
 	idUser int primary key auto_increment,
     nome varchar(45) not null,
-    senha varchar(45) not null unique,
+    senha varchar(45) not null,
     email varchar(45) not null unique,
-    tel varchar(45) not null unique,
+    tel varchar(45) unique,
     fkAgremiacao int,
     constraint fkUserAgremiacao foreign key (fkAgremiacao)
 		references agremiacao(idAgremiacao));
@@ -19,7 +19,7 @@ create table usuario(
 create table instrumentos(
 	idInstrumento int primary key auto_increment,
     nome varchar(45) not null,
-    afinacao varchar(5) not null unique);
+    afinacao varchar(5) not null );
     
 create table levada(
 	idLevada int primary key auto_increment,
