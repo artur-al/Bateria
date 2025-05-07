@@ -1,26 +1,44 @@
-:root{
+:root {
     --fundo: #e1dad0;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background: var(--fundo);
 }
 
-/* .container {
-    display: flex;
-    justify-content: center;
-    height: 300px;
-    align-items: center;
-    background: var(--fundo);
-    color: #000;
-    margin: 1%;
-} */
+.motivo {
+    background: #f5f5f5;
+    color: #1a1a1a;
+    max-width: 1000px;
+    padding: 2rem;
+    margin: 20px auto;
+    border-left: 8px solid #000000;
+    margin-bottom: 2rem;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 10px rgba(24, 23, 23, 0.2);
+    border-radius: 10px;
+}
+
+.motivo h1 {
+    color: #1a1a1a;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.motivo p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
 
 .cards {
     position: relative;
@@ -46,8 +64,8 @@ body{
 }
 
 .cards .card:hover {
-    width: 500px;
-    height: 660px;
+    width: 450px;
+    height: 550px;
 }
 
 .cards .card .imgBox {
@@ -126,7 +144,7 @@ body{
 .cards .card:hover p {
     opacity: 1;
     visibility: visible;
-    transform: translateY(200px);
+    transform: translateY(150px);
 }
 
 .cards .card h2 {
@@ -148,20 +166,18 @@ body{
 }
 
 .rodape {
-    background-color: #000; 
-    color: #fff;            
+    background-color: #000;
+    color: #fff;
     padding: 40px 20px;
     text-align: center;
     font-size: 1rem;
     line-height: 1.5;
-    margin-top: 40px;
+    margin-top: 70px;
     position: relative;
     z-index: 10;
-  }
-  
-  .rodape p {
+}
+
+.rodape p {
     max-width: 800px;
     margin: 0 auto;
-  }
-  
-  
+}

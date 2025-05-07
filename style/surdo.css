@@ -1,202 +1,202 @@
 .surdo {
-    margin: 20px auto;
-    padding: 2em;
-    max-width: 1000px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
-  
-  .surdo h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #23232e;
-  }
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
 
-  .surdo h3 {
-    font-size: 1.5em;
-    color: #1a1a1a;
-    margin-top: 1.5em;
-    border-left: 4px solid #23232e;
-    padding-left: 10px;
-  }
-  
-  .surdo p {
-    font-size: 1em;
-    margin: 1em 0;
-    text-align: justify;
-    line-height: 1.6;
-  }
-  
-  .surdo ul {
-    padding-left: 1.5em;
-    margin-top: 1em;
-  }
-  
-  .surdo li {
-    margin-bottom: 0.5em;
-  }
+.surdo h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
 
-  .caixa{
-    margin: 20px auto;
-    padding: 2em;
-    max-width: 1000px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+.surdo h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
 
-  .caixa h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #23232e;
-  }
+.surdo p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
 
-  .caixa h3{
-    font-size: 1.5em;
-    color: #1a1a1a;
-    margin-top: 1.5em;
-    border-left: 4px solid #23232e;
-    padding-left: 10px;
-  }
+.surdo ul {
+  padding-left: 1.5em;
+  margin-top: 1em;
+}
 
-  .caixa ul {
-    padding-left: 1.5em;
-    margin-top: 1em;
-  }
-  
-  .caixa li {
-    margin-bottom: 0.5em;
-  }
+.surdo li {
+  margin-bottom: 0.5em;
+}
 
-  .caixa p{
-    font-size: 1em;
-    margin: 1em 0;
-    text-align: justify;
-    line-height: 1.6;
-  }
+.caixa {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
 
-  .agogo{
-    margin: 20px auto;
-    padding: 2em;
-    max-width: 1000px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+.caixa h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
 
-  .agogo h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #23232e;
-  }
+.caixa h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
 
-  .agogo h3{
-    font-size: 1.5em;
-    color: #1a1a1a;
-    margin-top: 1.5em;
-    border-left: 4px solid #23232e;
-    padding-left: 10px;
-  }
+.caixa ul {
+  padding-left: 1.5em;
+  margin-top: 1em;
+}
 
-  .agogo p{
-    font-size: 1em;
-    margin: 1em 0;
-    text-align: justify;
-    line-height: 1.6;
-  }
+.caixa li {
+  margin-bottom: 0.5em;
+}
 
-  .chocalho{
-    margin: 20px auto;
-    padding: 2em;
-    max-width: 1000px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+.caixa p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
 
-  .chocalho h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #23232e;
-  }
+.agogo {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
 
-  .chocalho h3{
-    font-size: 1.5em;
-    color: #1a1a1a;
-    margin-top: 1.5em;
-    border-left: 4px solid #23232e;
-    padding-left: 10px;
-  }
+.agogo h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
 
-  .chocalho p{
-    font-size: 1em;
-    margin: 1em 0;
-    text-align: justify;
-    line-height: 1.6;
-  }
+.agogo h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
 
-  .tamobrim{
-    margin: 20px auto;
-    padding: 2em;
-    max-width: 1000px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+.agogo p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
 
-  .tamobrim h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #23232e;
-  }
+.chocalho {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
 
-  .tamobrim h3{
-    font-size: 1.5em;
-    color: #1a1a1a;
-    margin-top: 1.5em;
-    border-left: 4px solid #23232e;
-    padding-left: 10px;
-  }
+.chocalho h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
 
-  .tamobrim p{
-    font-size: 1em;
-    margin: 1em 0;
-    text-align: justify;
-    line-height: 1.6;
-  }
+.chocalho h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
+
+.chocalho p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.tamobrim {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.tamobrim h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
+
+.tamobrim h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
+
+.tamobrim p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}

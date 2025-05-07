@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  background: #e1dad0;
+}
+
 a {
   color: #fff;
   text-decoration: none;
@@ -106,16 +110,17 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  padding: 20px;
+  gap: 40px;
+  padding: 50px;
 }
 
 .card img {
-  width: 150px;
-  height: 150px;
+  background: #f5f5f5;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.445);
   transition: transform 0.3s;
 }
 
@@ -133,7 +138,15 @@ main {
   cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
-#terceira:hover {
+.card.primeira img {
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+}
+
+.card.segunda img {
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+}
+
+.card.terceira img {
   cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
 }
 
@@ -169,7 +182,6 @@ main {
   height: 50%;
   z-index: 10;
   cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
-  /* TEMPORÁRIO: fundo visível para teste */
   background-color: rgba(255, 0, 0, 0.1);
 }
 
@@ -192,6 +204,38 @@ main {
   top: 50%;
   left: 50%;
 }
+
+.card.chocalho img {
+  width: 15rem;
+  background: #f5f5f5;
+}
+
+.card.chocalho img:hover{
+  animation: chocalho 1.5s infinite;
+}
+
+@keyframes chocalho {
+  0%{
+    transform: translate(0px);
+  }
+  25%{
+    transform: translateY(-20px);
+  }
+  50%{
+    transform: translateY(-15px);
+  }
+  60%{
+    transform: translateY(0px);
+  }
+  75%{
+    transform: translateY(15px);
+  }
+  100%{
+    transform: translateY(15px);
+  }
+}
+
+
 
 body::-webkit-scrollbar {
   width: 1vh;
@@ -255,14 +299,11 @@ body::-webkit-scrollbar-thumb {
 
 .perola-negra {
   background-color: #f5f5f5;
-  /* fundo neutro */
   color: #1a1a1a;
-  /* texto escuro */
   padding: 20px;
   margin: 20px auto;
   max-width: 1000px;
   border-left: 6px solid #c4a300;
-  /* dourado clássico */
   border-radius: 8px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -285,9 +326,7 @@ body::-webkit-scrollbar-thumb {
 
 .vai-vai {
   background-color: #000;
-  /* fundo preto */
   color: #fff;
-  /* texto branco */
   padding: 2rem;
   margin: 20px auto;
   max-width: 1000px;
