@@ -1,0 +1,384 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #e1dad0;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+.logo {
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: system-ui, Helvetica, Arial, sans-serif;
+  background: #23232e;
+  height: 8vh;
+}
+
+main {
+  height: 92vh;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+}
+
+.nav-list li {
+  letter-spacing: 3px;
+  margin-left: 32px;
+}
+
+.mobile-menu {
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menu div {
+  width: 32px;
+  height: 2px;
+  background: #fff;
+  margin: 8px;
+  transition: 0.3s;
+}
+
+.percussao {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.percussao h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
+
+.percussao h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
+
+.percussao ul {
+  padding-left: 1.5em;
+  margin-top: 1em;
+}
+
+.percussao li {
+  margin-bottom: 0.5em;
+}
+
+.percussao p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  padding: 50px;
+}
+
+.card img {
+  background: #f5f5f5;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.445);
+  transition: transform 0.3s;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+
+#caixa:hover {
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+}
+
+.card.tamborim img {
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+}
+
+.card.primeira img {
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+}
+
+.card.segunda img {
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+}
+
+.card.terceira img {
+  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+}
+
+.imagem-interativa {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.imagem-interativa img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.imagem-interativa {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.imagem-interativa img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Estilo das zonas interativas */
+.zona {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  z-index: 10;
+  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.zona1 {
+  top: 0;
+  left: 0;
+}
+
+.zona2 {
+  top: 0;
+  left: 50%;
+}
+
+.zona3 {
+  top: 50%;
+  left: 0;
+}
+
+.zona4 {
+  top: 50%;
+  left: 50%;
+}
+
+.card.chocalho img {
+  width: 15rem;
+  background: #f5f5f5;
+}
+
+.card.chocalho img:hover {
+  animation: chocalho 1.5s infinite;
+}
+
+@keyframes chocalho {
+  0% {
+    transform: translate(0px);
+  }
+
+  25% {
+    transform: translateY(-20px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  60% {
+    transform: translateY(0px);
+  }
+
+  75% {
+    transform: translateY(15px);
+  }
+
+  100% {
+    transform: translateY(15px);
+  }
+}
+
+body::-webkit-scrollbar {
+  width: 1vh;
+}
+
+body::-webkit-scrollbar-track {
+  background: #000;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 12vh;
+  border: 4vh solid #fff;
+}
+
+.gavioes {
+  margin: 20px auto;
+  padding: 2em;
+  max-width: 1000px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.gavioes h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #23232e;
+}
+
+.gavioes h3 {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-top: 1.5em;
+  border-left: 4px solid #23232e;
+  padding-left: 10px;
+}
+
+.gavioes ul {
+  padding-left: 1.5em;
+  margin-top: 1em;
+}
+
+.gavioes li {
+  margin-bottom: 0.5em;
+}
+
+.gavioes p {
+  font-size: 1em;
+  margin: 1em 0;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.perola-negra {
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 1000px;
+  border-left: 6px solid #c4a300;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perola-negra h1 {
+  font-size: 2em;
+  color: #000000;
+  border-bottom: 4px solid #c4a300;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.perola-negra p {
+  font-size: 1em;
+  margin: 1em 0;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.vai-vai {
+  background-color: #000;
+  color: #fff;
+  padding: 2rem;
+  margin: 20px auto;
+  max-width: 1000px;
+  border-left: 8px solid #fff;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.vai-vai h2 {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.vai-vai p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.uniao-da-ilha {
+  background: #f5f5f5;
+  color: #1a1a1a;
+  max-width: 1000px;
+  padding: 2rem;
+  margin: 20px auto;
+  border-left: 8px solid #000000;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 0 10px rgba(24, 23, 23, 0.2);
+  border-radius: 10px;
+}
+
+.uniao-da-ilha h2 {
+  color: #1a1a1a;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.uniao-da-ilha p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}

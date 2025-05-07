@@ -1,0 +1,183 @@
+:root {
+    --fundo: #e1dad0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--fundo);
+}
+
+.motivo {
+    background: #f5f5f5;
+    color: #1a1a1a;
+    max-width: 1000px;
+    padding: 2rem;
+    margin: 20px auto;
+    border-left: 8px solid #000000;
+    margin-bottom: 2rem;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 10px rgba(24, 23, 23, 0.2);
+    border-radius: 10px;
+}
+
+.motivo h1 {
+    color: #1a1a1a;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.motivo p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.cards {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 60px;
+}
+
+.cards .card {
+    position: relative;
+    width: 320px;
+    height: 350px;
+    background: #eee;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cards .card:hover {
+    width: 450px;
+    height: 550px;
+}
+
+.cards .card .imgBox {
+    position: absolute;
+    inset: 20px 20px 50px 20px;
+    background: #555;
+    border-radius: 15px;
+    transition: 0.5s;
+    z-index: 1000;
+}
+
+.cards .card:hover .imgBox {
+    inset: -50px 60px 250px 60px;
+    box-shadow: 0 0 0 10px var(--fundo);
+}
+
+.cards .card .imgBox::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    left: -30px;
+    border-top-right-radius: 20px;
+    transform: translateY(-100px);
+    opacity: 0;
+    box-shadow: 5px -5px 0 4px var(--fundo);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.cards .card:hover .imgBox::before {
+    opacity: 1;
+    transform: translateY(50px);
+}
+
+.cards .card .imgBox::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    right: -30px;
+    border-top-left-radius: 20px;
+    transform: translateY(-100px);
+    opacity: 0;
+    box-shadow: -5px -5px 0 4px var(--fundo);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.cards .card:hover .imgBox::after {
+    opacity: 1;
+    transform: translateY(50px);
+}
+
+.cards .card .imgBox img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cards .card p {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50px);
+    transition: 0.5s;
+}
+
+.cards .card:hover p {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(150px);
+}
+
+.cards .card h2 {
+    position: absolute;
+    bottom: 8px;
+    color: #000;
+    transition: 0.5s;
+    font-weight: 600;
+    transition: 0.5s;
+}
+
+.cards .card:hover h2 {
+    padding: 5px 25px;
+    background: #005C4B;
+    color: #fff;
+    bottom: -25px;
+    border-radius: 15px;
+    box-shadow: 0 0 0 10px var(--fundo);
+}
+
+.rodape {
+    background-color: #000;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 8em;
+    position: relative;
+    z-index: 10;
+}
+
+.rodape p {
+    max-width: 800px;
+    margin: 0 auto;
+}

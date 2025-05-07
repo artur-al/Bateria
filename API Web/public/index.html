@@ -1,82 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AquaTech | Página Inicial</title>
-
-    <script src="./js/sessao.js"></script>
-
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="../style/style.css">
+    <title>Bateria</title>
 </head>
 
 <body>
-    <div class="header">
-      <div class="container">
-        <h1 class="titulo">AquaTech</h1>
-        <ul class="navbar">
-          <li class="agora">
-            <a href="#">Inicial</a>
-          </li>
-          <li>
-            <a href="simulador.html">Simulador</a>
-          </li>
-          <li>|</li>
-          <li>
-            <a href="login.html">Login</a>
-          </li>
-          <li>
-            <a href="cadastro.html">Cadastro</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  
-    <div class="banner">
-      <div class="container">
-        <p>Preservando <span>hoje</span> para existirem <span>amanhã</span>.</p>
-      </div>
-    </div>
-  
-    <div class="social">
-      <div class="container">
-        <div class="boxes">
-          <div class="box">
-            <img src="assets/imgs/planet-earth_color.png">
-            <h4>Missão</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
-          <div class="box">
-            <img src="assets/imgs/lightbulb_color.png">
-            <h4>Visão</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
-          <div class="box">
-            <img src="assets/imgs/growth_color.png">
-            <h4>Valores</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <div class="footer">
-      <div class="container">
-        <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-        <span class="version">v1.0.0</span>
-      </div>
-    </div>
-  </body>
+    <header>
+        <nav>
+            <a class="logo" href="./index.html">temporaria</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a href="./index.html">Sobre</a></li>
+                <li><a href="./inst.html">Instrumentos</a></li>
+                <li><a href="./escolas.html">Escolas</a></li>
+                <li><a href="./origem.html">Origem</a></li>
+                <li><a href="./login.html"><img width="32" height="32" src="https://img.icons8.com/puffy/32/user.png" alt="user"/></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="percussao">
+                <h1>Instrumentos de Percussão</h1>
+
+                <p>Os instrumentos de percussão produzem som quando são <strong>batidos, sacudidos, raspados ou
+                        esfregados</strong>. Eles se dividem em dois grupos principais:</p>
+
+                <ul>
+                    <li><strong>Altura indefinida</strong>: não produzem notas específicas, como o <em>chocalho</em> e o
+                        <em>pandeiro</em>.</li>
+                    <li><strong>Altura definida</strong>: geram notas musicais, como o <em>xilofone</em>, a
+                        <em>marimba</em> e o <em>tímpano</em>.</li>
+                </ul>
+
+                <p>A variedade é enorme — há instrumentos de percussão simples ou complexos, pequenos ou grandes, feitos
+                    de diversos materiais.</p>
+
+                <h3>Como funcionam?</h3>
+                <p>O som surge da vibração de todo o corpo do instrumento (<strong>idiofones</strong>) ou de uma
+                    membrana esticada sobre ele (<strong>membranofones</strong>).</p>
+
+                <h3>Origem e uso</h3>
+                <p>Considerados os instrumentos mais antigos da humanidade, a percussão surgiu com as primeiras
+                    civilizações. Sempre estiveram presentes em <strong>rituais religiosos, festas, danças e
+                        cerimônias</strong>. Hoje, são essenciais em quase todos os estilos musicais ao redor do mundo.
+                </p>
+            </div>
+            <div class="cards-container">
+                <div class="card agogo">
+                    <div class="imagem-interativa">
+                      <img src="../assets/agogo.webp" alt="agogo" id="agogozona">
+                      <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
+                      <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
+                      <div class="zona zona3" onclick="tocarSom('agogo3')"></div>
+                      <!-- <div class="zona zona4" onclick="tocarSom('agogo4')"></div>                       -->
+                    </div>
+                  </div>
+                  
+                <div class="card caixa">
+                  <img src="../assets/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
+                </div>
+                <div class="card chocalho">
+                  <img src="../assets/chocalho.png" alt="chocalho">
+                </div>
+                <div class="card primeira">
+                  <img src="../assets/primeira2.png" alt="primeira" id="surdos"  onclick="tocarSom('surdo1abafado')">
+                  <!-- <div class="zona zona1" onclick="tocarSom('surdo1')"></div> -->
+                </div>
+                <div class="card segunda">
+                  <img src="../assets/segunda.png" alt="segunda" id="surdos">
+                </div>
+                <div class="card tamborim">
+                  <img src="../assets/tamborim.png" alt="tamborim">
+                </div>
+                <div class="card terceira">
+                  <img src="../assets/terceira.png" alt="terceira" id="surdos">
+                </div>
+              </div>              
+        </section>
+    </main>
+    <script src="mobile-navbar.js"></script>
+    <audio src="../assets/agogo 1.mp3" id="agogo1"></audio>
+    <audio src="../assets/agogo 2.mp3" id="agogo2"></audio>
+    <audio src="../assets/agogo 3.mp3" id="agogo3"></audio>
+    <audio src="../assets/surdo1.mp3" id="surdo1"></audio>
+    <audio src="../assets/surdo1abafada.mp3" id="surdo1abafado"></audio>
+    <audio src="../assets/caixa.mp3" id="caixa1"></audio>
+</body>
 
 </html>
+<script>
+    function tocarSom(id) {
+      const som = document.getElementById(id);
+      if (som) {
+        som.currentTime = 0; 
+        som.play();
+      }
+    }
+</script>
