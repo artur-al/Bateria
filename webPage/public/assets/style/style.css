@@ -131,23 +131,23 @@ main {
 
 
 #caixa:hover {
-  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
 .card.tamborim img {
-  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
 .card.primeira img {
-  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+  cursor: url('../baquetaSurdo.png') 16 16, auto;
 }
 
 .card.segunda img {
-  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+  cursor: url('../baquetaSurdo.png') 16 16, auto;
 }
 
 .card.terceira img {
-  cursor: url('../assets/baquetaSurdo.png') 16 16, auto;
+  cursor: url('../baquetaSurdo.png') 16 16, auto;
 }
 
 .imagem-interativa {
@@ -181,7 +181,7 @@ main {
   width: 50%;
   height: 50%;
   z-index: 10;
-  cursor: url('../assets/baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
   background-color: rgba(255, 0, 0, 0.1);
 }
 
