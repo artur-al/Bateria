@@ -98,11 +98,60 @@
 
 </html>
 <script>
+  let gravacao = []
+  let gravando = false
+  let inicioGravacao = 0
+
     function tocarSom(id) {
       const som = document.getElementById(id);
       if (som) {
         som.currentTime = 0; 
         som.play();
       }
+      if(gravando){
+        const tempoAtual = Date.now() - inicioGravacao;
+        gravacao.push(
+          {
+            nome: id,
+            arquivo: som.src,
+            tempo: tempoAtual
+          }
+        )
+      }
     }
+
+    function alternarGravacao(){
+      gravando = !gravando;
+      if(gravando){
+        gravacao = [];
+        inicioGravacao = Date.now();
+        console.log("Inicio de gravação");
+      }else{
+        console.log("Fim gravação", gravacao)
+      }
+    }
+
+    function reproduzirGravacao(){
+      gravacao.forEach(nota => {
+        setTimeout(() =>{
+          const audio = new Audio(nota.arquivo);
+          audio.play();
+        },nota.tempo);
+      });
+    }
+
+    document.addEventListener("keydown", function (event)
+      {
+        const tecla = event.key.toLowerCase();
+
+        if(tecla == "x"){
+          alternarGravacao();
+        }
+
+        if(tecla == "r"){
+          reproduzirGravacao();
+        }
+      }
+    )
+
 </script>
