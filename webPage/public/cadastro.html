@@ -37,7 +37,7 @@
                        -->
         <div class="campo">
           <span>Nome da agremicação:</span>
-          <input id="nomeAgremiacao" type="text" placeholder="Insira aqui o nome" />
+          <input id="nomeAgremiacao_input" type="text" placeholder="Insira aqui o nome" />
         </div>
         <div class="campo">
           <span>Nome:</span>
@@ -73,14 +73,14 @@
 
   function cadastrar() {
     // aguardar();
-
+    
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var nomeAgremiacao = nomeAgremiacao.value;
+    var nomeAgremiacao = nomeAgremiacao_input.value;
     var idAgremiacaoVincular;
 
     // Verificando se há algum campo em branco
@@ -126,7 +126,7 @@
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
+        idAgremiacaoServer: idAgremiacaoVar
       }),
     })
       .then(function (resposta) {

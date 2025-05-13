@@ -5,13 +5,18 @@ create table agremiacao(
 	idAgremiacao int primary key auto_increment,
     nome varchar(45) not null,
     categoria varchar(45) not null);
-
+    
+insert into agremiacao values
+	(default, 'Gaviões da Fiel','Grupo Especial'),
+	(default,'Pérola Negra','Grupo de acesso 2'),
+	(default,'Vai-Vai', 'Grupo Especial'),
+	(default,'União da Ilha', 'Grupo Especial');
+    
 create table usuario(
-	idUser int primary key auto_increment,
+	id int primary key auto_increment,
     nome varchar(45) not null,
+	email varchar(45) not null unique,
     senha varchar(45) not null,
-    email varchar(45) not null unique,
-    tel varchar(45) unique,
     fkAgremiacao int,
     constraint fkUserAgremiacao foreign key (fkAgremiacao)
 		references agremiacao(idAgremiacao));
@@ -28,9 +33,7 @@ create table levada(
     fkUser int,
     fkAgremiacao int,
     constraint fkLevadaUser foreign key (fkUser)
-		references usuario(idUser),
-	constraint fkLevadaAgremiacao foreign key (fkAgremiacao)
-		references agremiacao(idAgremiacao));
+		references usuario(idUser));
 
 create table nota(
 	idNota int primary key auto_increment,
@@ -42,3 +45,5 @@ create table nota(
 		references instrumentos(idInstrumento),
 	constraint fkNotaLevada foreign key (fkLevada)
 		references levada(idLevada));
+
+select * from usuario;
