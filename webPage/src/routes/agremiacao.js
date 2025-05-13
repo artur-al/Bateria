@@ -8,15 +8,19 @@ router.post("/cadastrar", function (req, res) {
     agremiacaoController.cadastrar(req, res);
 })
 
-router.get("/buscar", function (req, res) {
-    agremiacaoController.buscarPorCategoria(req, res);
-});
+router.get("/categoria/:categoria", function (req,res){
+    agremiacaoController.buscarPorCategoria(req,res);
+})
 
-router.get("/buscar/:idAgremiacao", function (req, res) {
+// router.get("/buscar", function (req, res) {
+//     agremiacaoController.buscarPorCategoria(req, res);
+// });
+
+router.get("/:idAgremiacao", function (req, res) {
   agremiacaoController.buscarPoridAgremiacao(req, res);
 });
 
-router.get("/listar", function (req, res) {
+router.get("/", function (req, res) {
   agremiacaoController.listar(req, res);
 });
 

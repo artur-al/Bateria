@@ -1,4 +1,4 @@
-var empresaModel = require("../models/agremiacaoModel");
+var agremiacaoModel = require("../models/agremiacaoModel");
 
 function buscarPoridAgremiacao(req, res) {
   var idAgremiacao = req.query.idAgremiacao;
@@ -23,16 +23,16 @@ function buscarPorCategoria(req, res) {
 }
 
 function cadastrar(req, res) {
-  var idAgremiacao = req.body.idAgremiacao;
   var nome = req.body.nome;
+  var categoria = req.body.categoria;
 
-  agremiacaoModel.buscarPoridAgremiacao(idAgremiacao).then((resultado) => {
-    if (resultado.length > 0) {
-      res
-        .status(401)
-        .json({ mensagem: `a agremiacao ${cnpj} já existe` });
+  agremiacaoModel.listar().then((todasAgremiacoes) => {
+    const existe = todasAgremiacoes.some(a => a.nome === nome);
+
+    if (existe) {
+      res.status(401).json({ mensagem: `A agremiação ${nome} já existe` });
     } else {
-        agremiacaoModel.cadastrar(nome, idAgremiacao).then((resultado) => {
+      agremiacaoModel.cadastrar(nome, categoria).then((resultado) => {
         res.status(201).json(resultado);
       });
     }
