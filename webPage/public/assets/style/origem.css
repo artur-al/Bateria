@@ -46,6 +46,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    flex-direction: column;
     gap: 60px;
 }
 
@@ -64,8 +65,9 @@ body {
 }
 
 .cards .card:hover {
-    width: 450px;
+    width: 800px;
     height: 550px;
+    transition: 0.5s;
 }
 
 .cards .card .imgBox {
