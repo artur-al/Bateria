@@ -5,10 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/style/style.css">
+  <script src="./assets/app/sessão.js"></script>
   <title>Bateria</title>
 </head>
 
-<body>
+<body onload="listar()">
   <header>
     <nav>
       <a class="logo" href="./index.html">temporaria</a>
@@ -74,8 +75,8 @@
 
 </html>
 <script>
-  // Array para armazenar agremiacoes cadastradas para validação de código de ativação 
-  let listaAgremiacaoCadastrada = [];
+  // Array para armazenar agremiacao cadastradas para validação de código de ativação 
+  window.listaAgremiacaoCadastrada = [];
 
   function cadastrar() {
     // aguardar();
@@ -108,18 +109,28 @@
     }
 
     // Verificando se o nome é de alguma agremiacao cadastrada
+    let agremiacaoEncontrada = false;
     for (let i = 0; i < listaAgremiacaoCadastrada.length; i++) {
       if (listaAgremiacaoCadastrada[i].nome == nomeAgremiacao) {
-        idAgremiacaoVincular = listaAgremiacaoCadastrada[i].idAgremiacao
-        console.log("Nome válido.");
+        idAgremiacaoVincular = listaAgremiacaoCadastrada[i].idAgremiacao;
+        agremiacaoEncontrada = true;
         break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para nome inválido)";
-        finalizarAguardar();
       }
     }
 
+    if (!agremiacaoEncontrada) {
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "(Mensagem de erro para nome inválido)";
+      finalizarAguardar();
+      return false;
+    }
+
+    if (senhaVar !== confirmacaoSenhaVar) {
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "A confirmação de senha não confere.";
+      finalizarAguardar();
+      return false;
+    }
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
       method: "POST",
@@ -132,7 +143,7 @@
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idAgremiacaoServer: idAgremiacaoVincular
+        idAgremiacaoVincularServer: idAgremiacaoVincular
       }),
     })
       .then(function (resposta) {
@@ -162,26 +173,42 @@
     return false;
   }
 
-  // Listando agremiacoes cadastradas 
+  // Listando agremiacao cadastradas 
   function listar() {
-    fetch("/agremiacoes/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((agremiacoes) => {
-          agremiacoes.forEach((agremiacao) => {
-            listaAgremiacaoCadastrada.push(agremiacao);
+    console.log("Iniciando busca por agremiações...");
 
-            console.log("listaAgremiacaoCadastrada")
-            console.log(listaAgremiacaoCadastrada[0].nome)
-          });
+    fetch("http://localhost:3333/agremiacao/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      credentials: "include",
+      cache: "no-store"
+    })
+      .then(response => {
+        console.log("Status:", response.status);
+        if (!response.ok) {
+          throw new Error(`Erro HTTP! status: ${response.status}`);
+        }
+        return response.text().then(text => {
+          console.log("Resposta bruta:", text);
+          return text ? JSON.parse(text) : [];
         });
       })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
+      .then(data => {
+        console.log("Dados recebidos:", data);
+        listaAgremiacaoCadastrada = Array.isArray(data) ? data : [];
+
+        if (listaAgremiacaoCadastrada.length === 0) {
+          console.warn("Aviso: Lista de agremiações vazia");
+        buscarAgremiacoesAlternativo();
+        }
+      })
+      .catch(error => {
+        console.error("Erro na requisição:", error);
       });
   }
-
   function sumirMensagem() {
     cardErro.style.display = "none";
   }

@@ -3,6 +3,8 @@ var router = express.Router();
 
 var agremiacaoController = require("../controllers/agremiacaoController");
 
+router.get("/listar", agremiacaoController.listar); 
+
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
 router.post("/cadastrar", function (req, res) {
     agremiacaoController.cadastrar(req, res);
