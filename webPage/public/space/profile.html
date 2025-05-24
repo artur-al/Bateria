@@ -4,13 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="../assets/style/style.css">
     <title>Bateria</title>
 </head>
 
 <body>
-    <h2>Olá Usuario</h2>
-    <p>Aqui você pode além de desenvolver as levadas você pode salvar elas</p>
+    <header>
+        <nav>
+            <a class="logo" href="../index.html">temporaria</a>
+            <ul class="nav-list">
+                <li><a href="./space/inst.html">Instrumentos</a></li>
+                <li><a href="./dash.html">Painel</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="percussao">
+        <h2>Olá Usuario</h2>
+        <p>Aqui você pode além de desenvolver as levadas você pode salvar elas</p>
+    </div>
     <select id="select-agremiacao">
         <option value="">Nenhuma agremiação</option>
         <option value="1">Gaviões da Fiel</option>
@@ -18,11 +29,15 @@
         <option value="3">Vai-Vai</option>
         <option value="4">União da Ilha</option>
     </select>
-
+    <div class="controles-gravacao">
+        <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
+        <button onclick="reproduzirGravacao()">Reproduzir (R)</button>
+        <button onclick="salvarLevada()">Salvar Levada</button>
+    </div>
     <div class="cards-container">
         <div class="card agogo">
             <div class="imagem-interativa">
-                <img src="./assets/agogo.webp" alt="agogo" id="agogozona">
+                <img src="../assets/agogo.webp" alt="agogo" id="agogozona">
                 <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
                 <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
                 <div class="zona zona3" onclick="tocarSom('agogo3')"></div>
@@ -31,33 +46,27 @@
         </div>
 
         <div class="card caixa">
-            <img src="./assets/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
+            <img src="../assets/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
         </div>
         <div class="card chocalho">
-            <img src="./assets/chocalho.png" alt="chocalho">
+            <img src="../assets/chocalho.png" alt="chocalho">
         </div>
         <div class="card primeira">
-            <img src="../public/assets/primeira2.png" alt="primeira" id="surdos" onclick="tocarSom('surdo1abafado')">
+            <img src="../assets/primeira2.png" alt="primeira" id="surdos" onclick="tocarSom('surdo1abafado')">
             <!-- <div class="zona zona1" onclick="tocarSom('surdo1')"></div> -->
         </div>
         <div class="card segunda">
-            <img src="./assets/segunda.png" alt="segunda" id="surdos">
+            <img src="../assets/segunda.png" alt="segunda" id="surdos">
         </div>
         <div class="card tamborim">
-            <img src="./assets/tamborim.png" alt="tamborim">
+            <img src="../assets/tamborim.png" alt="tamborim">
         </div>
         <div class="card terceira">
-            <img src="./assets/terceira.png" alt="terceira" id="surdos">
+            <img src="../assets/terceira.png" alt="terceira" id="surdos">
         </div>
     </div>
     </section>
-    <div class="controles-gravacao">
-        <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
-        <button onclick="reproduzirGravacao()">Reproduzir (R)</button>
-        <button onclick="salvarLevada()">Salvar Levada</button>
-    </div>
     </main>
-    <script src="mobile-navbar.js"></script>
     <audio src="./assets/agogo 1.mp3" id="agogo1"></audio>
     <audio src="./assets/agogo 2.mp3" id="agogo2"></audio>
     <audio src="./assets/agogo 3.mp3" id="agogo3"></audio>
