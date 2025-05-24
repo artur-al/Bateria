@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <title>Bateria</title>
+</head>
+
+<body>
+    <h2>Olá Usuario</h2>
+    <p>Aqui você pode além de desenvolver as levadas você pode salvar elas</p>
+    <select id="select-agremiacao">
+        <option value="">Nenhuma agremiação</option>
+        <option value="1">Gaviões da Fiel</option>
+        <option value="2">Pérola Negra</option>
+        <option value="3">Vai-Vai</option>
+        <option value="4">União da Ilha</option>
+    </select>
+
+    <div class="cards-container">
+        <div class="card agogo">
+            <div class="imagem-interativa">
+                <img src="./assets/agogo.webp" alt="agogo" id="agogozona">
+                <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
+                <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
+                <div class="zona zona3" onclick="tocarSom('agogo3')"></div>
+                <!-- <div class="zona zona4" onclick="tocarSom('agogo4')"></div>                       -->
+            </div>
+        </div>
+
+        <div class="card caixa">
+            <img src="./assets/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
+        </div>
+        <div class="card chocalho">
+            <img src="./assets/chocalho.png" alt="chocalho">
+        </div>
+        <div class="card primeira">
+            <img src="../public/assets/primeira2.png" alt="primeira" id="surdos" onclick="tocarSom('surdo1abafado')">
+            <!-- <div class="zona zona1" onclick="tocarSom('surdo1')"></div> -->
+        </div>
+        <div class="card segunda">
+            <img src="./assets/segunda.png" alt="segunda" id="surdos">
+        </div>
+        <div class="card tamborim">
+            <img src="./assets/tamborim.png" alt="tamborim">
+        </div>
+        <div class="card terceira">
+            <img src="./assets/terceira.png" alt="terceira" id="surdos">
+        </div>
+    </div>
+    </section>
+    <div class="controles-gravacao">
+        <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
+        <button onclick="reproduzirGravacao()">Reproduzir (R)</button>
+        <button onclick="salvarLevada()">Salvar Levada</button>
+    </div>
+    </main>
+    <script src="mobile-navbar.js"></script>
+    <audio src="./assets/agogo 1.mp3" id="agogo1"></audio>
+    <audio src="./assets/agogo 2.mp3" id="agogo2"></audio>
+    <audio src="./assets/agogo 3.mp3" id="agogo3"></audio>
+    <audio src="./assets/surdo1.mp3" id="surdo1"></audio>
+    <audio src="./assets/surdo1abafada.mp3" id="surdo1abafado"></audio>
+    <audio src="./assets/caixa.mp3" id="caixa1"></audio>
+</body>
+
+</html>
+<script>
+    let gravacao = []
+    let gravando = false
+    let inicioGravacao = 0
+
+    function tocarSom(id) {
+        const som = document.getElementById(id);
+        if (som) {
+            som.currentTime = 0;
+            som.play();
+        }
+        if (gravando) {
+            const tempoAtual = Date.now() - inicioGravacao;
+            gravacao.push(
+                {
+                    nome: id,
+                    arquivo: som.src,
+                    tempo: tempoAtual
+                }
+            )
+        }
+    }
+
+    function alternarGravacao() {
+        gravando = !gravando;
+        if (gravando) {
+            gravacao = [];
+            inicioGravacao = Date.now();
+            console.log("Inicio de gravação");
+        } else {
+            console.log("Fim gravação", gravacao)
+        }
+    }
+
+    function reproduzirGravacao() {
+        gravacao.forEach(nota => {
+            setTimeout(() => {
+                const audio = new Audio(nota.arquivo);
+                audio.play();
+            }, nota.tempo);
+        });
+    }
+
+    document.addEventListener("keydown", function (event) {
+        const tecla = event.key.toLowerCase();
+
+        if (tecla == "x") {
+            alternarGravacao();
+        }
+
+        if (tecla == "r") {
+            reproduzirGravacao();
+        }
+    }
+    )
+    async function salvarLevada() {
+        if (gravacao.length === 0) {
+            alert('Grave algo antes de salvar!');
+            return;
+        }
+
+        const nomeLevada = prompt('Digite um nome para sua levada:');
+        if (!nomeLevada) return;
+
+        const idUsuario = prompt('Digite seu ID de usuário:');
+        if (!idUsuario || isNaN(idUsuario)) {
+            alert('ID de usuário inválido!');
+            return;
+        }
+
+        const idAgremiacao = document.getElementById('select-agremiacao').value || null;
+
+        try {
+            const response = await fetch('/levada/cadastrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome: nomeLevada,
+                    padrao: gravacao,
+                    idUsuario: parseInt(idUsuario),
+                    idAgremiacao: idAgremiacao ? parseInt(idAgremiacao) : null
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`Levada "${nomeLevada}" salva com sucesso! ID: ${data.idLevada}`);
+            } else {
+                throw new Error(data.error || 'Falha ao salvar');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao salvar levada: ' + error.message);
+        }
+    }
+</script>

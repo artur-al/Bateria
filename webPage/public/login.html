@@ -19,12 +19,10 @@
                 <div class="line3"></div>
             </div>
             <ul class="nav-list">
-                <li><a href="./index.html">Sobre</a></li>
                 <li><a href="./space/inst.html">Instrumentos</a></li>
                 <li><a href="./space/escolas.html">Escolas</a></li>
                 <li><a href="./space/origem.html">Origem</a></li>
-                <li><a href="./login.html"><img width="32" height="32" src="https://img.icons8.com/puffy/32/user.png"
-                            alt="user" /></a></li>
+               
             </ul>
         </nav>
     </header>
@@ -99,7 +97,7 @@
                         sessionStorage.ID_USUARIO = json.id || "";
 
                         setTimeout(function () {
-                            window.location = "./space/dash.html";
+                            window.location = "./space/profile.html";
                         }, 1000);
                     } else {
                         throw new Error("Estrutura de resposta inválida");
