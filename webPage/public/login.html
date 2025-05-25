@@ -22,7 +22,7 @@
                 <li><a href="./space/inst.html">Instrumentos</a></li>
                 <li><a href="./space/escolas.html">Escolas</a></li>
                 <li><a href="./space/origem.html">Origem</a></li>
-               
+
             </ul>
         </nav>
     </header>
@@ -45,6 +45,7 @@
                         <input id="senha_input" type="password" placeholder="******">
                     </div>
                     <button class="botao" onclick="entrar()">Entrar</button>
+                    <p>Já não possui conta? <a href="./cadastro.html" class="log-cadin">Cadastrar</a></p>
                 </div>
 
                 <div id="div_aguardar" class="loading-div">
@@ -81,8 +82,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                emailServer: emailVar,  
-                senhaServer: senhaVar   
+                emailServer: emailVar,
+                senhaServer: senhaVar
             })
         }).then(function (resposta) {
             console.log("Resposta recebida:", resposta);

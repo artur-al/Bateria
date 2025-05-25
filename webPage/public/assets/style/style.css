@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #e1dad0;
+  background: #99938b4d;
 }
 
 a {
@@ -29,7 +29,7 @@ nav {
   justify-content: space-around;
   align-items: center;
   font-family: system-ui, Helvetica, Arial, sans-serif;
-  background: #23232e;
+  background: #4c0ebe;
   height: 8vh;
 }
 
@@ -145,9 +145,11 @@ main {
 .card.segunda img {
   cursor: url('../baquetaSurdo.png') 16 16, auto;
 }
-.card.chocalho img{
+
+.card.chocalho img {
   cursor: move;
 }
+
 .card.terceira img {
   cursor: url('../baquetaSurdo.png') 16 16, auto;
 }
@@ -177,7 +179,7 @@ main {
   display: block;
 }
 
-/* Estilo das zonas interativas */
+/* area das zonas de interação */
 .zona {
   position: absolute;
   width: 50%;
@@ -399,4 +401,229 @@ body::-webkit-scrollbar-thumb {
   background: #4c0ebe;
   border: 1px solid #fff;
   border-radius: 15px;
+}
+
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 8vh);
+  padding: 2rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-login {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-login:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-login h2 {
+  color: #4c0ebe;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.campo span {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.campo input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.campo input:focus {
+  border-color: #4c0ebe;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 14, 190, 0.1);
+}
+
+.botao {
+  background: #4c0ebe;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.botao:hover {
+  background: #3a0aa5;
+  transform: translateY(-2px);
+}
+
+.botao:active {
+  transform: translateY(0);
+}
+
+.alerta_erro {
+  position: fixed;
+  top: 9vh;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.card_erro {
+  background: #ffebee;
+  color: #c62828;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-div {
+  display: none;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.loading-div img {
+  width: 40px;
+  height: 40px;
+}
+
+.card-cadastro {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 2rem auto;
+}
+
+.card-cadastro:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-cadastro h2 {
+  color: #4c0ebe;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.card-cadastro .formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.alternar-form {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.alternar-form a {
+  color: #4c0ebe;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.alternar-form a:hover {
+  color: #3a0aa5;
+  text-decoration: underline;
+}
+
+.instrucao {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-cadastro {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.campo-agremiacao {
+  position: relative;
+}
+
+.campo-agremiacao::after {
+  content: "✏️";
+  position: absolute;
+  right: 10px;
+  top: 35px;
+  font-size: 1rem;
+}
+
+.log-cadin {
+  color: #4c0ebe;
 }

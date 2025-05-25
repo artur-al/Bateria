@@ -60,6 +60,7 @@
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
+          <p>Já possui conta? <a href="./login.html" class="log-cadin">Login</a></p>
         </div>
         <div id="div_aguardar" class="loading-div">
           <img src="./assets/circle-loading.gif" id="loading-gif" />
@@ -199,7 +200,7 @@
 
         if (listaAgremiacaoCadastrada.length === 0) {
           console.warn("Aviso: Lista de agremiações vazia");
-        buscarAgremiacoesAlternativo();
+          buscarAgremiacoesAlternativo();
         }
       })
       .catch(error => {
