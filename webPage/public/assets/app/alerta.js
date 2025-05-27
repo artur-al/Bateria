@@ -1,125 +1,63 @@
 var alertas = [];
 
-function obterdados(idLevada) {
-    fetch(`/medidas/tempo-real/${idLevada}`)
+function obterDadosLevada(idLevada) {
+    fetch(`/levadas/status/${idLevada}`)
         .then(resposta => {
             if (resposta.status == 200) {
                 resposta.json().then(resposta => {
-
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-
-                    alertar(resposta, idLevada);
+                    verificarStatus(resposta, idLevada);
                 });
             } else {
-                console.error(`Nenhum dado encontrado para o id ${idLevada} ou erro na API`);
+                console.error(`Nenhum dado encontrado para a levada ${idLevada} ou erro na API`);
             }
         })
         .catch(function (error) {
-            console.error(`Erro na obtenção dos dados do aquario p/ gráfico: ${error.message}`);
+            console.error(`Erro na obtenção dos dados da levada: ${error.message}`);
         });
-
 }
 
-function alertar(resposta, idLevada) {
-    var temp = resposta[0].temperatura;
-
-    var grauDeAviso = '';
-
-    var limites = {
-        muito_quente: 23,
-        quente: 22,
-        ideal: 20,
-        frio: 10,
-        muito_frio: 5
-    };
-
-    var classe_temperatura = 'cor-alerta';
-
-    if (temp >= limites.muito_quente) {
-        classe_temperatura = 'cor-alerta perigo-quente';
-        grauDeAviso = 'perigo quente'
-        grauDeAvisoCor = 'cor-alerta perigo-quente'
-        exibirAlerta(temp, idLevada, grauDeAviso, grauDeAvisoCor)
-    }
-    else if (temp < limites.muito_quente && temp >= limites.quente) {
-        classe_temperatura = 'cor-alerta alerta-quente';
-        grauDeAviso = 'alerta quente'
-        grauDeAvisoCor = 'cor-alerta alerta-quente'
-        exibirAlerta(temp, idLevada, grauDeAviso, grauDeAvisoCor)
-    }
-    else if (temp < limites.quente && temp > limites.frio) {
-        classe_temperatura = 'cor-alerta ideal';
-        removerAlerta(idLevada);
-    }
-    else if (temp <= limites.frio && temp > limites.muito_frio) {
-        classe_temperatura = 'cor-alerta alerta-frio';
-        grauDeAviso = 'alerta frio'
-        grauDeAvisoCor = 'cor-alerta alerta-frio'
-        exibirAlerta(temp, idLevada, grauDeAviso, grauDeAvisoCor)
-    }
-    else if (temp <= limites.muito_frio) {
-        classe_temperatura = 'cor-alerta perigo-frio';
-        grauDeAviso = 'perigo frio'
-        grauDeAvisoCor = 'cor-alerta perigo-frio'
-        exibirAlerta(temp, idLevada, grauDeAviso, grauDeAvisoCor)
-    }
-
-    var card;
-
-    if (document.getElementById(`temp_aquario_${idLevada}`) != null) {
-        document.getElementById(`temp_aquario_${idLevada}`).innerHTML = temp + "°C";
-    }
-
-    if (document.getElementById(`card_${idLevada}`)) {
-        card = document.getElementById(`card_${idLevada}`)
-        card.className = classe_temperatura;
-    }
-}
-
-function exibirAlerta(temp, idLevada, grauDeAviso, grauDeAvisoCor) {
-    var indice = alertas.findIndex(item => item.idLevada == idLevada);
-
-    if (indice >= 0) {
-        alertas[indice] = { idLevada, temp, grauDeAviso, grauDeAvisoCor }
+function verificarStatus(resposta, idLevada) {
+    const progresso = resposta.progresso;
+    const prazo = new Date(resposta.prazo);
+    const hoje = new Date();
+    const diasRestantes = Math.ceil((prazo - hoje) / (1000 * 60 * 60 * 24));
+    
+    let status = '';
+    let statusClass = '';
+    
+    if (progresso < 50 && diasRestantes < 3) {
+        status = 'Atrasada';
+        statusClass = 'perigo-frio';
+    } else if (progresso < 70 && diasRestantes < 7) {
+        status = 'Em risco';
+        statusClass = 'alerta-frio';
+    } else if (progresso > 90 && diasRestantes > 14) {
+        status = 'Adiantada';
+        statusClass = 'alerta-quente';
     } else {
-        alertas.push({ idLevada, temp, grauDeAviso, grauDeAvisoCor });
+        status = 'No prazo';
+        statusClass = 'ideal';
     }
-
-    exibirCards();
+    
+    atualizarCardLevada(idLevada, progresso, status, statusClass);
 }
 
-function removerAlerta(idLevada) {
-    alertas = alertas.filter(item => item.idLevada != idLevada);
-    exibirCards();
-}
-
-function exibirCards() {
-    alerta.innerHTML = '';
-
-    for (var i = 0; i < alertas.length; i++) {
-        var mensagem = alertas[i];
-        alerta.innerHTML += transformarEmDiv(mensagem);
+function atualizarCardLevada(idLevada, progresso, status, statusClass) {
+    const card = document.querySelector(`.card-levada[data-id="${idLevada}"]`);
+    if (card) {
+        const statusElement = card.querySelector('.status');
+        const progressoBar = card.querySelector('.progresso-bar');
+        
+        statusElement.textContent = status;
+        statusElement.className = `status ${statusClass}`;
+        progressoBar.style.width = `${progresso}%`;
     }
-}
-
-function transformarEmDiv({ idLevada, temp, grauDeAviso, grauDeAvisoCor }) {
-
-    var descricao = JSON.parse(sessionStorage.AQUARIOS).find(item => item.id == idLevada).descricao;
-    return `
-    <div class="mensagem-alarme">
-        <div class="informacao">
-            <div class="${grauDeAvisoCor}">&#12644;</div> 
-            <h3>${descricao} está em estado de ${grauDeAviso}!</h3>
-            <small>Temperatura capturada: ${temp}°C.</small>   
-        </div>
-        <div class="alarme-sino"></div>
-    </div>
-    `;
 }
 
 function atualizacaoPeriodica() {
-    JSON.parse(sessionStorage.AQUARIOS).forEach(item => {
-        obterdados(item.id)
+    JSON.parse(sessionStorage.LEVADAS || '[]').forEach(levada => {
+        obterDadosLevada(levada.id);
     });
-    setTimeout(atualizacaoPeriodica, 5000);
+    setTimeout(atualizacaoPeriodica, 30000); 
 }

@@ -67,12 +67,12 @@
     </div>
     </section>
     </main>
-    <audio src="./assets/agogo 1.mp3" id="agogo1"></audio>
-    <audio src="./assets/agogo 2.mp3" id="agogo2"></audio>
-    <audio src="./assets/agogo 3.mp3" id="agogo3"></audio>
-    <audio src="./assets/surdo1.mp3" id="surdo1"></audio>
-    <audio src="./assets/surdo1abafada.mp3" id="surdo1abafado"></audio>
-    <audio src="./assets/caixa.mp3" id="caixa1"></audio>
+    <audio src="../assets/agogo 1.mp3" id="agogo1"></audio>
+    <audio src="../assets/agogo 2.mp3" id="agogo2"></audio>
+    <audio src="../assets/agogo 3.mp3" id="agogo3"></audio>
+    <audio src="../assets/surdo1.mp3" id="surdo1"></audio>
+    <audio src="../assets/surdo1abafada.mp3" id="surdo1abafado"></audio>
+    <audio src="../assets/caixa.mp3" id="caixa1"></audio>
 </body>
 
 </html>
@@ -140,38 +140,63 @@
         const nomeLevada = prompt('Digite um nome para sua levada:');
         if (!nomeLevada) return;
 
-        const idUsuario = prompt('Digite seu ID de usuário:');
-        if (!idUsuario || isNaN(idUsuario)) {
-            alert('ID de usuário inválido!');
+        const idUsuario = sessionStorage.ID_USUARIO;
+        if (!idUsuario) {
+            alert('Usuário não autenticado!');
+            window.location.href = './login.html';
             return;
         }
 
         const idAgremiacao = document.getElementById('select-agremiacao').value || null;
 
+
         try {
             const response = await fetch('/levada/cadastrar', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     nome: nomeLevada,
                     padrao: gravacao,
-                    idUsuario: parseInt(idUsuario),
-                    idAgremiacao: idAgremiacao ? parseInt(idAgremiacao) : null
+                    idUsuario: sessionStorage.ID_USUARIO,
+                    idAgremiacao: document.getElementById('select-agremiacao').value || null
                 })
             });
 
-            const data = await response.json();
-
             if (response.ok) {
-                alert(`Levada "${nomeLevada}" salva com sucesso! ID: ${data.idLevada}`);
-            } else {
-                throw new Error(data.error || 'Falha ao salvar');
+                alert('Levada salva!');
+                window.location.href = 'cards.html';
             }
         } catch (error) {
             console.error(error);
-            alert('Erro ao salvar levada: ' + error.message);
+        }
+    }
+
+    function calcularBPM(gravacao) {
+        if (gravacao.length < 2) return 0;
+        const primeiro = gravacao[0].tempo;
+        const ultimo = gravacao[gravacao.length - 1].tempo;
+        const duracao = (ultimo - primeiro) / 1000;
+        const bpm = Math.round((gravacao.length / duracao) * 60);
+        return bpm > 0 ? bpm : 120;
+    }
+
+    function determinarInstrumentoPrincipal(gravacao) {
+        const contagem = {};
+        gravacao.forEach(nota => {
+            const instr = nota.nome.replace(/\d+$/, '');
+            contagem[instr] = (contagem[instr] || 0) + 1;
+        });
+        return Object.keys(contagem).reduce((a, b) => contagem[a] > contagem[b] ? a : b);
+    }
+
+    async function atualizarListaLevadas() {
+        try {
+            const response = await fetch(`/levada/usuario/${sessionStorage.ID_USUARIO}`);
+            const levadas = await response.json();
+            sessionStorage.LEVADAS = JSON.stringify(levadas);
+            localStorage.setItem('ultimasLevadas', JSON.stringify(levadas));
+        } catch (error) {
+            console.error('Erro ao atualizar levadas:', error);
         }
     }
 </script>

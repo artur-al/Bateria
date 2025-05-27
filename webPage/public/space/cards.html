@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/style/dashboards.css">
+    <link rel="stylesheet" href="../assets/style/style.css">
+    <script src="../assets/app/sessao.js"></script>
+    <script src="../assets/app/alerta.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Bateria</title>
+</head>
+
+<body onload="validarSessao(), exibirLevadas(), atualizacaoPeriodica()">
+
+    <div class="janela">
+
+        <div class="header-left dash-header">
+
+            <h1>Bateria</h1>
+
+            <div class="hello">
+                <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
+            </div>
+
+            <div class="btn-nav">
+                <h3>Suas levadas</h3>
+            </div>
+
+            <div class="btn-nav-white">
+                <a href="./dash.html">
+                    <h3>Painel das escolas</h3>
+                </a>
+            </div>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+
+        </div>
+
+        <div class="dash">
+            <div id="alerta">
+            </div>
+            <div class="area-parametros-alerta">
+                <p class="titulo-legenda">
+                    Legenda - Status das Levadas
+                </p>
+                <div class="parametros-alerta">
+                    <div class="item-regua perigo-frio">
+                        <p>Atrasada</p>
+                    </div>
+                    <div class="item-regua alerta-frio">
+                        <p>Em risco</p>
+                    </div>
+                    <div class="item-regua ideal">
+                        <p>No prazo</p>
+                    </div>
+                    <div class="item-regua alerta-quente">
+                        <p>Adiantada</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards" id="cardLevadas">
+                <!-- As levadas serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    function exibirLevadas() {
+        fetch(`/levada/usuario/${sessionStorage.ID_USUARIO}`)
+            .then(response => response.json())
+            .then(levadas => {
+                let html = '';
+                levadas.forEach(levada => {
+                    html += `
+          <div class="card-levada">
+            <h3>${levada.nome}</h3>
+            <p>BPM: ${levada.bpm}</p>
+            <button onclick="tocarLevada(${levada.id})">Tocar</button>
+          </div>
+        `;
+                });
+                document.getElementById('cardLevadas').innerHTML = html;
+            });
+    }
+
+    document.getElementById("cardLevadas").innerHTML = '';
+
+    levadas.forEach(levada => {
+        const dataCriacao = new Date(levada.dataCriacao || levada.prazo);
+        const statusInfo = calcularStatus(levada);
+
+        const cardHTML = `
+            <div class="card-levada" data-id="${levada.id}">
+                <div class="header-levada">
+                    <h2>${levada.nome}</h2>
+                    <div class="levada-metadata">
+                        <span class="bpm">${levada.bpm || 0} BPM</span>
+                        <span class="instrumento">${levada.instrumento || 'Vários'}</span>
+                        <span class="status ${statusInfo.classe}">${statusInfo.texto}</span>
+                    </div>
+                </div>
+                <div class="detalhes-levada">
+                    <div class="info">
+                        ${levada.agremiacao ? `<p><strong>Agremiação:</strong> ${levada.agremiacao}</p>` : ''}
+                        <p><strong>Criada em:</strong> ${dataCriacao.toLocaleDateString()}</p>
+                        <p><strong>Padrão:</strong> ${levada.padrao.length} notas</p>
+                    </div>
+                    <div class="progresso">
+                        <div class="progresso-bar" style="width: ${statusInfo.progresso}%"></div>
+                    </div>
+                </div>
+                <div class="acoes-levada">
+                    <button class="btn-acao" onclick="reproduzirLevada(${levada.id})">
+                        <i class="fas fa-play"></i> Tocar
+                    </button>
+                    <button class="btn-acao" onclick="editarLevada(${levada.id})">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                </div>
+            </div>
+        `;
+        document.getElementById("cardLevadas").innerHTML += cardHTML;
+    });
+
+
+    function calcularStatus(levada) {
+        if (!levada.prazo) return { classe: 'ideal', texto: 'Ativa', progresso: 100 };
+
+        const prazo = new Date(levada.prazo);
+        const hoje = new Date();
+        const diasRestantes = Math.ceil((prazo - hoje) / (1000 * 60 * 60 * 24));
+
+        if (diasRestantes < 0) return { classe: 'perigo-frio', texto: 'Expirada', progresso: 100 };
+        if (diasRestantes < 3) return { classe: 'perigo-frio', texto: 'Urgente', progresso: 90 };
+        if (diasRestantes < 7) return { classe: 'alerta-frio', texto: 'Atenção', progresso: 70 };
+        if (diasRestantes > 30) return { classe: 'alerta-quente', texto: 'Planejada', progresso: 30 };
+        return { classe: 'ideal', texto: 'Em andamento', progresso: 50 };
+    }
+
+    function reproduzirLevada(id) {
+        const levadas = JSON.parse(sessionStorage.LEVADAS || '[]');
+        const levada = levadas.find(l => l.id === id);
+
+        if (levada && levada.padrao) {
+            levada.padrao.forEach(nota => {
+                setTimeout(() => {
+                    const audio = new Audio(nota.arquivo);
+                    audio.play().catch(e => console.error('Erro ao reproduzir:', e));
+                }, nota.tempo);
+            });
+        }
+    }
+</script>

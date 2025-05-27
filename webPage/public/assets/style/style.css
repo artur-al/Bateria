@@ -129,7 +129,6 @@ main {
   cursor: pointer;
 }
 
-
 #caixa:hover {
   cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
@@ -401,6 +400,7 @@ body::-webkit-scrollbar-thumb {
   background: #4c0ebe;
   border: 1px solid #fff;
   border-radius: 15px;
+  margin: 2px;
 }
 
 
