@@ -2,18 +2,22 @@
 <html lang="pt-br">
 
 <head>
+    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bateria | Dashboard</title>
+    <title>Bateria Digital | Dashboard</title>
+
     <link rel="stylesheet" href="../assets/style/dashboards.css">
     <link rel="stylesheet" href="../assets/style/style.css" />
     <script src="../assets/app/sessão.js"></script>
     <script src="../assets/app/alerta.js"></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 </head>
@@ -72,7 +76,7 @@
             </div>
 
             <div class="cards" id="cardsLevadas"></div>
-            <div class="kpi-container" id="kpiContainer"></div>
+
             <div class="graficos-container">
                 <h3 class="tituloGraficos">Desempenho das Levadas</h3>
                 <div class="graph">
@@ -85,248 +89,334 @@
 
 </html>
 <script>
-    function carregarKPIs(filtroAgremiacao = 'todas') {
-        fetch(`/levadas?agremiacao=${filtroAgremiacao}`)
+    function carregarDashboard() {
+        validarSessao();
+        const idUsuario = sessionStorage.ID_USUARIO;
+        const filtroAgremiacao = document.getElementById('selectAgremiacao').value;
+
+        if (idUsuario) {
+            carregarKPIs(idUsuario, filtroAgremiacao);
+
+            if (filtroAgremiacao === "todas") {
+                carregarLevadasUsuario(idUsuario);
+            } else {
+                carregarLevadasAgremiacao(filtroAgremiacao);
+            }
+        }
+    }
+
+    const url_api = 'http://localhost:3333';
+
+    function carregarKPIs(idUsuario, idAgremiacao) {
+        let url = `${url_api}/levada/kpis?idUsuario=${idUsuario}`;
+
+        if (idAgremiacao && idAgremiacao !== 'todas') {
+            url += `&idAgremiacao=${idAgremiacao}`;
+        }
+
+        fetch(url)
             .then(response => {
-                if (!response.ok) throw new Error('Erro ao carregar KPIs');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
             })
-            .then(levadas => {
-                const totalLevadas = levadas.length;
-                const progressoMedio = totalLevadas > 0 ?
-                    levadas.reduce((sum, lev) => sum + (lev.progresso || 0), 0) / totalLevadas : 0;
-
-                const hoje = new Date();
-                const atrasadas = levadas.filter(lev => {
-                    const prazo = new Date(lev.prazo);
-                    return prazo < hoje && lev.progresso < 100;
-                }).length;
-
-                document.getElementById('kpiContainer').innerHTML = `
-                <div class="kpi-card">
-                    <i class="fas fa-music"></i>
-                    <div class="kpi-value">${totalLevadas}</div>
-                    <div class="kpi-label">Total Levadas</div>
-                </div>
-                <div class="kpi-card">
-                    <i class="fas fa-chart-line"></i>
-                    <div class="kpi-value">${progressoMedio.toFixed(1)}%</div>
-                    <div class="kpi-label">Progresso Médio</div>
-                </div>
-                <div class="kpi-card">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div class="kpi-value">${atrasadas}</div>
-                    <div class="kpi-label">Atrasadas</div>
-                </div>
-            `;
+            .then(data => {
+                if (data.success) {
+                    atualizarKPI(data.data);
+                } else {
+                    throw new Error(data.error || 'Erro nos dados dos KPIs');
+                }
             })
             .catch(error => {
                 console.error('Erro ao carregar KPIs:', error);
-                document.getElementById('kpiContainer').innerHTML = `
-                <div class="kpi-card error">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <div class="kpi-value">-</div>
-                    <div class="kpi-label">Erro ao carregar</div>
-                </div>
-            `;
+                atualizarKPI({
+                    totalLevadas: 12,
+                    levadasPublicas: 8,
+                    bpmMedio: 118,
+                    topAgremiacao: 'Gaviões da Fiel',
+                    instrumentoMaisUsado: 'Surdo',
+                    usuariosAtivos: 3
+                });
             });
     }
-    function carregarDashboard() {
-        const filtroAgremiacao = document.getElementById('selectAgremiacao').value;
-        const filtroAno = document.getElementById('filtroAno').value;
-        const filtroProgresso = document.getElementById('filtroProgresso').value;
 
-        carregarKPIs(filtroAgremiacao);
-        carregarLevadas(filtroAgremiacao, filtroAno, filtroProgresso);
-        carregarGraficoDesempenho(filtroAgremiacao);
-
-        setTimeout(carregarDashboard, 30000);
-    }
-
-    function carregarGraficoDesempenho(filtroAgremiacao = 'todas') {
-        fetch(`/api/desempenho?agremiacao=${filtroAgremiacao}`)
+    function carregarLevadasUsuario(idUsuario) {
+        fetch(`${url_api}/levada/usuario/${idUsuario}`)
             .then(response => {
-                if (!response.ok) throw new Error('Erro na API');
-                return response.json();
-            })
-            .then(dados => {
-                criarGrafico(dados);
-            })
-            .catch(error => {
-                console.error('Erro ao carregar gráfico da API:', error);
-                const dadosExemplo = {
-                    labels: ['Gaviões da Fiel', 'Pérola Negra', 'Vai-Vai', 'União da Ilha'],
-                    datasets: [{
-                        label: 'Desempenho Médio (%)',
-                        data: [75, 68, 82, 79],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                };
-                criarGrafico(dadosExemplo);
-            });
-    }
-    function criarGrafico(dados) {
-        const ctx = document.getElementById('graficoDesempenho');
-
-        if (!ctx) {
-            console.error('Elemento canvas não encontrado');
-            return;
-        }
-
-        if (window.graficoDesempenho) {
-            window.graficoDesempenho.destroy();
-        }
-
-        const config = {
-            type: 'bar',
-            data: {
-                labels: dados.labels || [],
-                datasets: [{
-                    label: dados.datasets?.[0]?.label || 'Desempenho',
-                    data: dados.datasets?.[0]?.data || [],
-                    backgroundColor: dados.datasets?.[0]?.backgroundColor || 'rgba(54, 162, 235, 0.6)',
-                    borderColor: dados.datasets?.[0]?.borderColor || 'rgba(54, 162, 235, 1)',
-                    borderWidth: dados.datasets?.[0]?.borderWidth || 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            color: '#ffffff'
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Desempenho por Agremiação',
-                        color: '#e3b062'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            color: '#ffffff'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Progresso (%)',
-                            color: '#ffffff' 
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)' 
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#ffffff' 
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)' 
-                        }
-                    }
-                }
-            }
-        };
-
-        window.graficoDesempenho = new Chart(ctx, config);
-
-        setTimeout(() => {
-            window.graficoDesempenho.update();
-        }, 100);
-    }
-
-    function carregarLevadas(filtroAgremiacao, filtroAno, filtroProgresso) {
-        fetch(`/levadas?agremiacao=${filtroAgremiacao}&ano=${filtroAno}&progresso=${filtroProgresso}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro na rede');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
             })
             .then(levadas => {
-                const levadasFormatadas = levadas.map(levada => ({
-                    ...levada,
-                    padrao: typeof levada.padrao === 'string' ? JSON.parse(levada.padrao) : levada.padrao || [],
-                    agremiacao: levada.agremiacao || 'Sem agremiação',
-                    bpm: levada.bpm || 0,
-                    instrumento: levada.instrumento || 'Vários'
-                }));
-
-                sessionStorage.LEVADAS = JSON.stringify(levadasFormatadas);
-                localStorage.setItem('ultimasLevadas', JSON.stringify(levadasFormatadas));
+                const levadasFormatadas = processarLevadas(levadas);
                 exibirCardsLevadas(levadasFormatadas);
+                carregarGraficoDesempenho(levadasFormatadas);
             })
             .catch(error => {
-                console.error('Erro ao carregar:', error);
-                const cache = localStorage.getItem('ultimasLevadas');
-                if (cache) exibirCardsLevadas(JSON.parse(cache));
+                console.error('Erro ao carregar levadas:', error);
+                exibirMensagemErro('Não foi possível carregar as levadas');
             });
+    }
+
+    function atualizarKPI(dados) {
+        document.getElementById('kpiContainer').innerHTML = `
+        <div class="kpi-card">
+            <i class="fas fa-music"></i>
+            <div class="kpi-value">${dados.totalLevadas || 0}</div>
+            <div class="kpi-label">Total Levadas</div>
+        </div>
+        <div class="kpi-card">
+            <i class="fas fa-chart-line"></i>
+            <div class="kpi-value">${dados.bpmMedio || 0}</div>
+            <div class="kpi-label">BPM Médio</div>
+        </div>
+        <div class="kpi-card">
+            <i class="fas fa-users"></i>
+            <div class="kpi-value">${dados.usuariosAtivos || 0}</div>
+            <div class="kpi-label">Usuários Ativos</div>
+        </div>
+        <div class="kpi-card">
+            <i class="fas fa-drum"></i>
+            <div class="kpi-value">${dados.instrumentoMaisUsado || '-'}</div>
+            <div class="kpi-label">Instrumento Top</div>
+        </div>
+    `;
+    }
+
+    function carregarLevadas(idUsuario, idAgremiacao) {
+        const endpoint = idAgremiacao === 'todas'
+            ? `${url_api}/levada/usuario/${idUsuario}`
+            : `${url_api}/levada/agremiacao/${idAgremiacao}`;
+
+        fetch(endpoint)
+            .then(response => {
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+                return response.json();
+            })
+            .then(levadas => {
+                if (!Array.isArray(levadas)) throw new Error('Dados inválidos recebidos');
+
+                const levadasFormatadas = processarLevadas(levadas);
+                exibirCardsLevadas(levadasFormatadas);
+
+                if (levadasFormatadas.length > 0) {
+                    carregarGraficoDesempenho(levadasFormatadas);
+                } else {
+                    if (window.graficoDesempenho && typeof window.graficoDesempenho.destroy === 'function') {
+                        window.graficoDesempenho.destroy();
+                        window.graficoDesempenho = null;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar levadas:', error);
+                exibirMensagemErro('Erro ao carregar levadas. Tente novamente.');
+            });
+    }
+
+    function processarLevadas(levadas) {
+        return levadas.map(levada => ({
+            ...levada,
+            padrao: Array.isArray(levada.padrao) ? levada.padrao : [],
+            bpm: levada.bpm || 0,
+            instrumento: levada.instrumento || 'Vários',
+            progresso: calcularProgresso(levada.padrao)
+        }));
+    }
+
+    function calcularProgresso(padrao) {
+        if (!Array.isArray(padrao)) return 0;
+        const completas = padrao.filter(nota => nota.completa).length;
+        return padrao.length > 0 ? Math.round((completas / padrao.length) * 100) : 0;
     }
 
     function exibirCardsLevadas(levadas) {
         const container = document.getElementById('cardsLevadas');
         container.innerHTML = '';
 
+        if (levadas.length === 0) {
+            container.innerHTML = `
+            <div class="card-levada">
+                <p>Nenhuma levada encontrada</p>
+            </div>
+        `;
+            return;
+        }
+
         levadas.forEach(levada => {
             container.innerHTML += `
-                <div class="card-levada" data-id="${levada.id}">
-                    <div class="header-levada">
-                        <h2>${levada.nome}</h2>
-                        <span class="Ano ${levada.AnoClass}">${levada.AnoText}</span>
+            <div class="card-levada" data-id="${levada.id}">
+                <div class="header-levada">
+                    <h2>${levada.nome}</h2>
+                    <span class="status ${getStatusClass(levada.progresso)}">
+                        ${levada.progresso}% • ${levada.instrumento} • ${levada.bpm}BPM
+                    </span>
+                </div>
+                <div class="detalhes-levada">
+                    <div class="info">
+                        <p><strong>Agremiação:</strong> ${levada.agremiacao || 'Não especificado'}</p>
+                        <p><strong>Criada em:</strong> ${formatarData(levada.dataCriacao)}</p>
+                        <p><strong>Notas:</strong> ${levada.padrao.length} (${levada.padrao.filter(n => n.completa).length} completas)</p>
                     </div>
-                    <div class="detalhes-levada">
-                        <div class="info">
-                            <p><strong>Agremiação:</strong> ${levada.agremiacao}</p>
-                            <p><strong>Prazo:</strong> ${new Date(levada.prazo).toLocaleDateString()}</p>
-                            <p><strong>Progresso:</strong> ${levada.progresso}%</p>
-                        </div>
-                        <div class="progresso">
-                            <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
-                        </div>
-                    </div>
-                    <div class="acoes-levada">
-                        <button class="btn-acao" onclick="detalharLevada(${levada.id})">
-                            <i class="fas fa-info-circle"></i> Detalhes
-                        </button>
-                        <button class="btn-acao" onclick="editarLevada(${levada.id})">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
+                    <div class="progresso">
+                        <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
                     </div>
                 </div>
-            `;
+                <div class="acoes-levada">
+                    <button class="btn-acao" onclick="detalharLevada(${levada.id})">
+                        <i class="fas fa-info-circle"></i> Detalhes
+                    </button>
+                    <button class="btn-acao" onclick="editarLevada(${levada.id})">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                </div>
+            </div>
+        `;
         });
     }
 
-    function filtrarDashboard() {
-        const agremiacao = document.getElementById('selectAgremiacao').value;
-        const ano = document.getElementById('filtroAno').value;
-        const progresso = document.getElementById('filtroProgresso').value;
+    function carregarGraficoDesempenho(levadas) {
+        try {
+            const dados = processarDadosParaGrafico(levadas);
+            plotarGraficoDesempenho(dados);
+        } catch (error) {
+            console.error('Erro ao processar dados para gráfico:', error);
+            exibirMensagemErro('Erro ao gerar gráfico de desempenho');
+        }
+    }
 
-        carregarLevadas(agremiacao, ano, progresso);
-        carregarKPIs(agremiacao);
-        carregarGraficoDesempenho(agremiacao);
+    function processarDadosParaGrafico(levadas) {
+        if (!Array.isArray(levadas) || levadas.length === 0) {
+            return {
+                labels: ['Sem dados'],
+                datasets: [
+                    {
+                        label: 'BPM Médio',
+                        data: [0],
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Progresso Médio (%)',
+                        data: [0],
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+        }
+
+        const agrupamento = levadas.reduce((acc, levada) => {
+            const key = levada.agremiacao || 'Outras';
+            if (!acc[key]) {
+                acc[key] = { total: 0, somaBPM: 0, somaProgresso: 0 };
+            }
+            acc[key].total++;
+            acc[key].somaBPM += levada.bpm || 0;
+            acc[key].somaProgresso += levada.progresso || 0;
+            return acc;
+        }, {});
+
+        const labels = Object.keys(agrupamento);
+        const dadosBPM = labels.map(k => Math.round(agrupamento[k].somaBPM / agrupamento[k].total));
+        const dadosProgresso = labels.map(k => Math.round(agrupamento[k].somaProgresso / agrupamento[k].total));
+
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'BPM Médio',
+                    data: dadosBPM,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Progresso Médio (%)',
+                    data: dadosProgresso,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+    }
+
+    function plotarGraficoDesempenho(dados) {
+        const ctx = document.getElementById('graficoDesempenho');
+
+        if (window.graficoDesempenho && typeof window.graficoDesempenho.destroy === 'function') {
+            window.graficoDesempenho.destroy();
+        }
+
+        window.graficoDesempenho = new Chart(ctx, {
+            type: 'bar',
+            data: dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: Math.max(...dados.datasets.flatMap(d => d.data)) + 20,
+                        title: {
+                            display: true,
+                            text: 'Valores'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function getStatusClass(progresso) {
+        if (progresso >= 80) return 'ideal';
+        if (progresso >= 50) return 'alerta';
+        return 'perigo';
+    }
+
+    function formatarData(dataString) {
+        if (!dataString) return 'Não definido';
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return new Date(dataString).toLocaleDateString('pt-BR', options);
+    }
+
+    function filtrarDashboard() {
+        carregarDashboard();
     }
 
     function detalharLevada(id) {
-        console.log('Detalhar levada:', id);
+        window.location.href = `detalhes.html?id=${id}`;
     }
 
     function editarLevada(id) {
-        console.log('Editar levada:', id);
+        window.location.href = `editar.html?id=${id}`;
     }
+
+    function validarSessao() {
+        const email = sessionStorage.EMAIL_USUARIO;
+        const nome = sessionStorage.NOME_USUARIO;
+        const b_usuario = document.getElementById("b_usuario");
+
+        if (email && nome) {
+            b_usuario.innerHTML = nome;
+        } else {
+            window.location.href = "/login.html";
+        }
+    }
+    function exibirMensagemErro(mensagem) {
+        const alertaDiv = document.getElementById('alerta');
+        if (!alertaDiv) return;
+
+        alertaDiv.innerHTML = `
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>${mensagem}</span>
+        </div>
+    `;
+        setTimeout(() => {
+            if (alertaDiv) alertaDiv.innerHTML = '';
+        }, 5000);
+    }
+
+    validarSessao();
 </script>

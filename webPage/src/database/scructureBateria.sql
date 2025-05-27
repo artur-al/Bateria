@@ -67,11 +67,12 @@ create table if not exists nota (
     constraint fknotalevada foreign key (fklevada)
         references levada(idlevada)
 );
+
 select * from usuario;
 select * from levada;
 
-INSERT INTO levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
-VALUES (
+insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+values (
     'Reggae Gaviões Profissional',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
       {"nome":"surdo3","tempo":250,"arquivo":"surdo3.mp3"},
@@ -85,8 +86,8 @@ VALUES (
     1   -- ID da Gaviões
 );
 
-INSERT INTO levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
-VALUES (
+insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+values (
     'Samba Vai-Vai Completo',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
       {"nome":"surdo2","tempo":250,"arquivo":"surdo2.mp3"},
@@ -100,8 +101,8 @@ VALUES (
     3  -- ID da Vai-Vai
 );
 
-INSERT INTO levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
-VALUES (
+insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+values (
     'Funk Pérola Pesado',
     '[{"nome":"surdo2","tempo":0,"arquivo":"surdo2.mp3"},
       {"nome":"caixa","tempo":200,"arquivo":"caixa.mp3"},
@@ -115,8 +116,8 @@ VALUES (
     2  -- ID da Pérola Negra
 );
 
-INSERT INTO levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
-VALUES (
+insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+values (
     'Reta União Tradicional',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
       {"nome":"surdo3","tempo":300,"arquivo":"surdo3.mp3"},
@@ -129,3 +130,7 @@ VALUES (
     1,
     4  -- ID da União da Ilha
 );
+set SQL_SAFE_UPDATES = 0;
+update levada set instrumento = 'bateria' where instrumento is null;
+set SQL_SAFE_UPDATES = 1;
+alter table levada add column progresso int default 0;

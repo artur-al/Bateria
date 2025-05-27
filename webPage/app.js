@@ -26,9 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Substitua o app.use(cors()) por:
 app.use(cors({
-  origin: 'http://localhost', // Ou o domínio exato do seu frontend
+  origin: 'http://localhost', 
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
