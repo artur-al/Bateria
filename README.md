@@ -10,11 +10,11 @@ pelo aluno do primeiro semestre do curso de Sistemas de Informação
 
 1. **Clonar o repósitorio**
 ```bash
-git clone
+    git clone
 ```
 2. **Navegar até o diretório**
 ```bash
-cd webPage
+    cd webPage
 ```
 3. **No terminal use o seguinte comando**
 ```bash
