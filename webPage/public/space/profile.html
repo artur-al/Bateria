@@ -31,8 +31,8 @@
     </select>
     <div class="controles-gravacao">
         <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
-        <button onclick="reproduzirGravacao()">Reproduzir (R)</button>
-        <button onclick="salvarLevada()">Salvar Levada</button>
+        <button onclick="reproduzirGravacao()">Reproduzir<br> (R)</button>
+        <button onclick="salvarLevada()">Salvar Levada<br>(S)</button>
     </div>
     <div class="cards-container">
         <div class="card agogo">
@@ -104,9 +104,11 @@
         if (gravando) {
             gravacao = [];
             inicioGravacao = Date.now();
+            alert('Gravação iniciada')
             console.log("Inicio de gravação");
         } else {
             console.log("Fim gravação", gravacao)
+            alert('Gravação finalizada')
         }
     }
 
@@ -129,6 +131,10 @@
         if (tecla == "r") {
             reproduzirGravacao();
         }
+
+        if(tecla == "s"){
+            salvarLevada();
+        }
     }
     )
     async function salvarLevada() {
@@ -143,7 +149,7 @@
         const idUsuario = sessionStorage.ID_USUARIO;
         if (!idUsuario) {
             alert('Usuário não autenticado!');
-            window.location.href = './login.html';
+            window.location.href = '../login.html';
             return;
         }
 
@@ -164,7 +170,7 @@
 
             if (response.ok) {
                 alert('Levada salva!');
-                window.location.href = 'cards.html';
+                window.location.href ='dash.html';
             }
         } catch (error) {
             console.error(error);

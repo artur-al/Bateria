@@ -24,13 +24,12 @@ function buscarLevadasPorUsuario(idUsuario) {
       l.padrao,
       l.bpm,
       l.instrumento,
-      l.datacriacao,
-      l.publica,
+      l.dtcriacao,
       a.nome as agremiacao
     FROM levada l
     LEFT JOIN agremiacao a ON l.fkagremiacao = a.idagremiacao
     WHERE l.fkuser = ${idUsuario}
-    ORDER BY l.datacriacao DESC
+    ORDER BY l.dtcriacao DESC
   `;
 
   return database.executar(query);
@@ -69,14 +68,13 @@ function buscarPorAgremiacao(idAgremiacao) {
             l.padrao,
             l.bpm,
             l.instrumento,
-            l.datacriacao,
-            l.publica,
+            l.dtcriacao,
             l.progresso,
             u.nome as responsavel
         FROM levada l
         JOIN usuario u ON l.fkuser = u.id
         WHERE l.fkagremiacao = ?
-        ORDER BY l.datacriacao DESC
+        ORDER BY l.dtcriacao DESC
     `;
   return database.executar(query, [idAgremiacao]);
 }
@@ -89,7 +87,7 @@ function buscarTodas() {
       l.padrao,
       l.bpm,
       l.instrumento,
-      l.datacriacao,
+      l.dtcriacao,
       l.prazo,
       l.progresso,
       u.nome as responsavel,
@@ -97,7 +95,7 @@ function buscarTodas() {
     FROM levada l
     LEFT JOIN usuario u ON l.fkuser = u.id
     LEFT JOIN agremiacao a ON l.fkagremiacao = a.idagremiacao
-    ORDER BY l.datacriacao DESC
+    ORDER BY l.dtcriacao DESC
   `;
   return database.executar(query);
 }
@@ -128,6 +126,35 @@ const remover = async (idLevada) => {
   return result.affectedRows > 0;
 };
 
+
+async function atualizarProgresso(idLevada, idUsuario, progresso) {
+  const query = `
+        INSERT INTO levada_progresso 
+        (fklevada, fkuser, progresso, ultima_atualizacao)
+        VALUES (?, ?, ?, NOW())
+        ON DUPLICATE KEY UPDATE 
+        progresso = VALUES(progresso), 
+        ultima_atualizacao = VALUES(ultima_atualizacao)
+    `;
+  return database.executar(query, [idLevada, idUsuario, progresso]);
+}
+
+async function registrarAvaliacao(idLevada, idUsuario, avaliacao) {
+  const query = `
+        INSERT INTO levada_avaliacao 
+        (fklevada, fkuser, avaliacao, data_avaliacao)
+        VALUES (?, ?, ?, NOW())
+    `;
+  return database.executar(query, [idLevada, idUsuario, avaliacao]);
+}
+async function buscarSonsInstrumentos() {
+  const query = `
+    SELECT nome, caminho_arquivo 
+    FROM instrumentos_sons
+  `;
+  return database.executar(query);
+}
+
 module.exports = {
   verificarUsuario,
   verificarAgremiacao,
@@ -137,5 +164,8 @@ module.exports = {
   buscarTodas,
   buscarPorId,
   listarTodas,
-  remover
+  remover,
+  atualizarProgresso,
+  registrarAvaliacao,
+  buscarSonsInstrumentos
 };

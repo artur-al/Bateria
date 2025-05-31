@@ -12,8 +12,8 @@ router.get("/detalhes/:idLevada", levadaController.buscarPorId);
 router.put("/atualizar/:idLevada", levadaController.atualizar); 
 router.delete("/remover/:idLevada", levadaController.remover); 
 
-router.get("/teste", (req, res) => {
-  res.json({ message: "Rota de levadas funcionando!" });
-});
+router.post("/:id/iniciar", levadaController.iniciarReproducao);
+router.post("/:id/pausar", levadaController.pausarReproducao);
+router.get("/:id/progresso", levadaController.verificarProgresso);
 
 module.exports = router;

@@ -162,39 +162,37 @@ async function buscarKPIs(req, res) {
     await database.executar("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
     const { idUsuario, idAgremiacao } = req.query;
 
-    // Construção da consulta segura
     let query = `
-      SELECT 
-        COUNT(*) as totalLevadas,
-        SUM(l.publica) as levadasPublicas,
-        ROUND(AVG(l.bpm), 0) as bpmMedio,
-        (
-          SELECT a.nome 
-          FROM agremiacao a 
-          JOIN levada l2 ON a.idagremiacao = l2.fkagremiacao
-          ${idUsuario ? 'WHERE l2.fkuser = ?' : ''}
-          ${idAgremiacao ? `${idUsuario ? 'AND' : 'WHERE'} l2.fkagremiacao = ?` : ''}
-          GROUP BY a.nome 
-          ORDER BY COUNT(*) DESC 
-          LIMIT 1
-        ) as topAgremiacao,
-        (
-          SELECT i.instrumento
-          FROM levada i
-          ${idUsuario ? 'WHERE i.fkuser = ?' : ''}
-          ${idAgremiacao ? `${idUsuario ? 'AND' : 'WHERE'} i.fkagremiacao = ?` : ''}
-          GROUP BY i.instrumento
-          ORDER BY COUNT(*) DESC
-          LIMIT 1
-        ) as instrumentoMaisUsado,
-        COUNT(DISTINCT l.fkuser) as usuariosAtivos
+        SELECT 
+          COUNT(*) as totalLevadas,
+          SUM(CASE WHEN l.fkagremiacao IS NOT NULL THEN 1 ELSE 0 END) as levadasPublicas,
+          ROUND(AVG(l.bpm), 0) as bpmMedio,
+          (
+            SELECT a.nome 
+            FROM agremiacao a 
+            JOIN levada l2 ON a.idagremiacao = l2.fkagremiacao
+            ${idUsuario ? 'WHERE l2.fkuser = ?' : ''}
+            ${idAgremiacao ? `${idUsuario ? 'AND' : 'WHERE'} l2.fkagremiacao = ?` : ''}
+            GROUP BY a.nome 
+            ORDER BY COUNT(*) DESC 
+            LIMIT 1
+          ) as topAgremiacao,
+          (
+            SELECT i.instrumento
+            FROM levada i
+            ${idUsuario ? 'WHERE i.fkuser = ?' : ''}
+            ${idAgremiacao ? `${idUsuario ? 'AND' : 'WHERE'} i.fkagremiacao = ?` : ''}
+            GROUP BY i.instrumento
+            ORDER BY COUNT(*) DESC
+            LIMIT 1
+          ) as instrumentoMaisUsado,
+          COUNT(DISTINCT l.fkuser) as usuariosAtivos
       FROM levada l
       ${idUsuario || idAgremiacao ? 'WHERE' : ''}
       ${idUsuario ? ' l.fkuser = ?' : ''}
       ${idAgremiacao ? `${idUsuario ? ' AND' : ''} l.fkagremiacao = ?` : ''}
     `;
 
-    // Preparar parâmetros na ordem correta
     const params = [];
     if (idUsuario) {
       params.push(idUsuario);
@@ -220,7 +218,7 @@ async function buscarKPIs(req, res) {
         usuariosAtivos: parseInt(kpis.usuariosAtivos) || 0
       }
     });
-    
+
     await database.executar("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',ONLY_FULL_GROUP_BY'))");
   } catch (error) {
     console.error('Erro ao buscar KPIs:', error);
@@ -335,6 +333,107 @@ const remover = async (req, res) => {
     res.status(500).json({ error: "Erro ao remover levada" });
   }
 };
+const playerState = {
+  active: false,
+  currentLevada: null,
+  audioContext: null,
+  startTime: 0,
+  progressInterval: null
+};
+
+async function iniciarReproducao(req, res) {
+  try {
+    const { idLevada } = req.params;
+    
+    if (playerState.active) {
+      return res.status(400).json({ error: "Já há uma levada sendo reproduzida" });
+    }
+
+    const levada = await levadaModel.buscarPorId(idLevada);
+    if (!levada) {
+      return res.status(404).json({ error: "Levada não encontrada" });
+    }
+
+    playerState.active = true;
+    playerState.currentLevada = levada;
+    playerState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    playerState.startTime = playerState.audioContext.currentTime;
+
+    const instrumentos = await levadaModel.buscarSonsInstrumentos();
+    const sounds = {};
+    instrumentos.forEach(instr => {
+      sounds[instr.nome] = instr.caminho_arquivo;
+    });
+
+    const padrao = Array.isArray(levada.padrao) ? levada.padrao : [];
+    padrao.forEach(nota => {
+      const soundPath = sounds[nota.nome] || '/sounds/default.mp3';
+      const noteTime = playerState.startTime + (nota.tempo / 1000);
+      
+      fetch(soundPath)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => playerState.audioContext.decodeAudioData(arrayBuffer))
+        .then(audioBuffer => {
+          const source = playerState.audioContext.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(playerState.audioContext.destination);
+          source.start(noteTime);
+        });
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Reprodução iniciada",
+      duration: padrao.length > 0 ? padrao[padrao.length-1].tempo : 0
+    });
+
+  } catch (error) {
+    console.error("Erro ao iniciar reprodução:", error);
+    res.status(500).json({ error: "Erro ao iniciar reprodução" });
+  }
+}
+
+function pausarReproducao(req, res) {
+  try {
+    if (!playerState.active) {
+      return res.status(400).json({ error: "Nenhuma levada sendo reproduzida" });
+    }
+
+    if (playerState.audioContext) {
+      playerState.audioContext.suspend();
+    }
+    
+    playerState.active = false;
+    res.status(200).json({ success: true, message: "Reprodução pausada" });
+
+  } catch (error) {
+    console.error("Erro ao pausar reprodução:", error);
+    res.status(500).json({ error: "Erro ao pausar reprodução" });
+  }
+}
+
+function verificarProgresso(req, res) {
+  try {
+    if (!playerState.active || !playerState.audioContext) {
+      return res.status(200).json({ active: false, progress: 0 });
+    }
+
+    const currentTime = playerState.audioContext.currentTime - playerState.startTime;
+    const duration = playerState.currentLevada.padrao[playerState.currentLevada.padrao.length-1].tempo / 1000;
+    const progress = Math.min(100, (currentTime / duration) * 100);
+
+    res.status(200).json({ 
+      active: true,
+      progress: progress,
+      currentTime: currentTime,
+      duration: duration
+    });
+
+  } catch (error) {
+    console.error("Erro ao verificar progresso:", error);
+    res.status(500).json({ error: "Erro ao verificar progresso" });
+  }
+}
 
 module.exports = {
   buscarLevadasPorUsuario,
@@ -344,5 +443,9 @@ module.exports = {
   listarTodas,
   buscarPorId,
   atualizar,
-  remover
+  remover,
+  iniciarReproducao,
+  pausarReproducao,
+  verificarProgresso
+  // avaliarLevada
 };
