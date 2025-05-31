@@ -22,6 +22,8 @@ create table if not exists usuario (
     constraint fkuseragremiacao foreign key (fkagremiacao)
         references agremiacao(idagremiacao)
 );
+insert into usuario values
+(default, 'Artur', 'artur@gmail.com', 'senha', null);
 
 create table if not exists instrumentos (
     idinstrumento int primary key auto_increment,
@@ -35,8 +37,7 @@ create table if not exists levada (
     padrao text not null,
     bpm int null,
     instrumento varchar(50) null,
-    publica tinyint(1) default 0,
-    datacriacao datetime default current_timestamp,
+    dtcriacao datetime default current_timestamp,
     fkuser int not null,
     fkagremiacao int null,
     constraint fklevadauser foreign key (fkuser)
@@ -45,13 +46,12 @@ create table if not exists levada (
         references agremiacao(idagremiacao)
 );
 
-insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
 values (
     'samba básico',
     '[{"nome":"surdo1","tempo":0},{"nome":"caixa","tempo":500},{"nome":"surdo2","tempo":1000}]',
     120,
     'bateria',
-    1,
     1,
     3
 );
@@ -68,10 +68,11 @@ create table if not exists nota (
         references levada(idlevada)
 );
 
+select * from agremiacao;
 select * from usuario;
 select * from levada;
 
-insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
 values (
     'Reggae Gaviões Profissional',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
@@ -81,12 +82,11 @@ values (
       {"nome":"surdo3","tempo":1250,"arquivo":"surdo3.mp3"}]',
     115,
     'bateria',
-    1,
-    1,  -- ID do usuário admin
-    1   -- ID da Gaviões
+    1,  
+    1  
 );
 
-insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
 values (
     'Samba Vai-Vai Completo',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
@@ -97,11 +97,10 @@ values (
     130,
     'bateria',
     1,
-    1,
     3  -- ID da Vai-Vai
 );
 
-insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
 values (
     'Funk Pérola Pesado',
     '[{"nome":"surdo2","tempo":0,"arquivo":"surdo2.mp3"},
@@ -112,11 +111,10 @@ values (
     108,
     'bateria',
     1,
-    1,
     2  -- ID da Pérola Negra
 );
 
-insert into levada (nome, padrao, bpm, instrumento, publica, fkuser, fkagremiacao)
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
 values (
     'Reta União Tradicional',
     '[{"nome":"surdo1","tempo":0,"arquivo":"surdo1.mp3"},
@@ -127,10 +125,31 @@ values (
     122,
     'bateria',
     1,
-    1,
     4  -- ID da União da Ilha
 );
+
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
+values (
+    'Samba Enredo 2023',
+    '[{"nome":"surdo1","tempo":0}]',
+    125,
+    'bateria',
+    1,
+    1 
+);
+
+insert into levada (nome, padrao, bpm, instrumento, fkuser, fkagremiacao)
+values (
+    'Meu exercício pessoal',
+    '[{"nome":"caixa","tempo":0}]',
+    110,
+    'caixa',
+    1,
+    null 
+);
+
 set SQL_SAFE_UPDATES = 0;
 update levada set instrumento = 'bateria' where instrumento is null;
 set SQL_SAFE_UPDATES = 1;
 alter table levada add column progresso int default 0;
+
