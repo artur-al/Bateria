@@ -91,7 +91,6 @@
             carregarKPIs(idUsuario, filtroAgremiacao);
 
             const promiseLevadas = (filtroAgremiacao === "todas") ? carregarLevadasUsuario(idUsuario) : carregarLevadasAgremiacao(filtroAgremiacao);
-
             promiseLevadas
                 .then(levadas => {
                     if (levadas) {
