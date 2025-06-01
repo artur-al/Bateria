@@ -83,6 +83,12 @@
                     <canvas id="graficoDesempenho"></canvas>
                 </div>
             </div>
+            <div class="graficos-container">
+                <h3 class="tituloGraficos">Distribuição de Notas por Instrumento</h3>
+                <div class="graph">
+                    <canvas id="graficoNotas"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -97,11 +103,17 @@
         if (idUsuario) {
             carregarKPIs(idUsuario, filtroAgremiacao);
 
-            if (filtroAgremiacao === "todas") {
-                carregarLevadasUsuario(idUsuario);
-            } else {
-                carregarLevadasAgremiacao(filtroAgremiacao);
-            }
+            const promiseLevadas = (filtroAgremiacao === "todas") ? carregarLevadasUsuario(idUsuario) : carregarLevadasAgremiacao(filtroAgremiacao);
+
+            promiseLevadas
+                .then(levadas => {
+                    if (levadas) {
+                        carregarGraficoNotas(levadas);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar levadas:", error);
+                });
         }
     }
 
@@ -138,9 +150,9 @@
                 });
             });
     }
+    function carregarLevadasAgremiacao(idAgremiacao) {
 
-    function carregarLevadasUsuario(idUsuario) {
-        fetch(`${url_api}/levada/usuario/${idUsuario}`)
+        return fetch(`${url_api}/levada/agremiacao/${idAgremiacao}`)
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
@@ -149,10 +161,30 @@
                 const levadasFormatadas = processarLevadas(levadas);
                 exibirCardsLevadas(levadasFormatadas);
                 carregarGraficoDesempenho(levadasFormatadas);
+                return levadasFormatadas;
+            })
+            .catch(error => {
+                console.error('Erro ao carregar levadas:', error);
+                exibirMensagemErro('Erro ao carregar levadas da agremiação');
+                return [];
+            });
+    }
+    function carregarLevadasUsuario(idUsuario) {
+        return fetch(`${url_api}/levada/usuario/${idUsuario}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then(levadas => {
+                const levadasFormatadas = processarLevadas(levadas);
+                exibirCardsLevadas(levadasFormatadas);
+                carregarGraficoDesempenho(levadasFormatadas);
+                return levadasFormatadas; 
             })
             .catch(error => {
                 console.error('Erro ao carregar levadas:', error);
                 exibirMensagemErro('Não foi possível carregar as levadas');
+                return []; 
             });
     }
 
@@ -298,6 +330,61 @@
         }
     }
 
+    function carregarGraficoNotas(levadas) {
+        const dados = processarDadosNotasParaGrafico(levadas);
+        const ctx = document.getElementById('graficoNotas').getContext('2d');
+
+        if (window.graficoNotas && typeof window.graficoNotas.destroy === 'function') {
+            window.graficoNotas.destroy();
+        }
+
+        window.graficoNotas = new Chart(ctx, {
+            type: 'pie',
+            data: dados,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribuição de Notas por Instrumento'
+                    }
+                }
+            }
+        });
+    }
+
+    function processarDadosNotasParaGrafico(levadas) {
+        const contagemInstrumentos = {};
+
+        levadas.forEach(levada => {
+            if (Array.isArray(levada.padrao)) {
+                levada.padrao.forEach(nota => {
+                    const instrumento = nota.nome.replace(/[0-9_]/g, '').toLowerCase() || 'outro';
+                    contagemInstrumentos[instrumento] = (contagemInstrumentos[instrumento] || 0) + 1;
+                });
+            }
+        });
+
+        const labels = Object.keys(contagemInstrumentos);
+        const data = Object.values(contagemInstrumentos);
+        const backgroundColors = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+            '#9966FF', '#FF9F40', '#8AC24A', '#607D8B'
+        ];
+
+        return {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: backgroundColors.slice(0, labels.length),
+                borderWidth: 1
+            }]
+        };
+    }
+
     function processarDadosParaGrafico(levadas) {
         if (!Array.isArray(levadas) || levadas.length === 0) {
             return {
@@ -310,13 +397,6 @@
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     },
-                    {
-                        label: 'Progresso Médio (%)',
-                        data: [0],
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }
                 ]
             };
         }
@@ -346,13 +426,6 @@
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 },
-                {
-                    label: 'Progresso Médio (%)',
-                    data: dadosProgresso,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }
             ]
         };
     }
@@ -375,7 +448,7 @@
                         suggestedMax: Math.max(...dados.datasets.flatMap(d => d.data)) + 20,
                         title: {
                             display: true,
-                            text: 'Valores'
+                            text: 'BPM'
                         }
                     }
                 }
@@ -426,49 +499,49 @@
         };
     }
 
-  function iniciarReproducaoSimulada(levadaObj, card) {
-    const startTime = levadaObj.audioContext.currentTime;
-    const progressoBar = card.querySelector('.progresso-bar');
-    const statusElement = card.querySelector('.status');
-    const playButton = card.querySelector('.btn-play');
+    function iniciarReproducaoSimulada(levadaObj, card) {
+        const startTime = levadaObj.audioContext.currentTime;
+        const progressoBar = card.querySelector('.progresso-bar');
+        const statusElement = card.querySelector('.status');
+        const playButton = card.querySelector('.btn-play');
 
-    if (playButton) playButton.innerHTML = '<i class="fas fa-pause"></i>';
+        if (playButton) playButton.innerHTML = '<i class="fas fa-pause"></i>';
 
-    const normalizarNome = (nome) => {
-        return nome.replace(/[0-9_]/g, '').toLowerCase();
-    };
+        const normalizarNome = (nome) => {
+            return nome.replace(/[0-9_]/g, '').toLowerCase();
+        };
 
-    levadaObj.padrao.forEach(nota => {
-        const instrNormalizado = normalizarNome(nota.nome);
-        const soundBuffer = levadaObj.sons[nota.nome] || levadaObj.sons[instrNormalizado] || levadaObj.sons.default;
+        levadaObj.padrao.forEach(nota => {
+            const instrNormalizado = normalizarNome(nota.nome);
+            const soundBuffer = levadaObj.sons[nota.nome] || levadaObj.sons[instrNormalizado] || levadaObj.sons.default;
 
-        if (soundBuffer) {
-            const source = levadaObj.audioContext.createBufferSource();
-            source.buffer = soundBuffer;
-            source.connect(levadaObj.audioContext.destination);
-            source.start(startTime + (nota.tempo / 1000));
-        }
-    });
+            if (soundBuffer) {
+                const source = levadaObj.audioContext.createBufferSource();
+                source.buffer = soundBuffer;
+                source.connect(levadaObj.audioContext.destination);
+                source.start(startTime + (nota.tempo / 1000));
+            }
+        });
 
-    levadaObj.intervalo = setInterval(() => {
-        const tempoDecorrido = (levadaObj.audioContext.currentTime - startTime) * 1000;
-        levadaObj.progresso = Math.min(100, (tempoDecorrido / levadaObj.tempoTotal) * 100);
+        levadaObj.intervalo = setInterval(() => {
+            const tempoDecorrido = (levadaObj.audioContext.currentTime - startTime) * 1000;
+            levadaObj.progresso = Math.min(100, (tempoDecorrido / levadaObj.tempoTotal) * 100);
 
-        progressoBar.style.width = `${levadaObj.progresso}%`;
+            progressoBar.style.width = `${levadaObj.progresso}%`;
 
-        if (statusElement) {
-            const instrumento = levadaObj.instrumento || 'Vários';
-            const bpm = levadaObj.bpm || '0';
-            
-            statusElement.textContent = `${Math.round(levadaObj.progresso)}% • ${instrumento} • ${bpm}BPM`;
-            statusElement.className = `status ${getStatusClass(levadaObj.progresso)}`;
-        }
+            if (statusElement) {
+                const instrumento = levadaObj.instrumento || 'Vários';
+                const bpm = levadaObj.bpm || '0';
 
-        if (levadaObj.progresso >= 100) {
-            pararLevada();
-        }
-    }, 50);
-}
+                statusElement.textContent = `${Math.round(levadaObj.progresso)}% • ${instrumento} • ${bpm}BPM`;
+                statusElement.className = `status ${getStatusClass(levadaObj.progresso)}`;
+            }
+
+            if (levadaObj.progresso >= 100) {
+                pararLevada();
+            }
+        }, 50);
+    }
 
     function carregarSons(levadaObj, padrao, card) {
         const instrumentos = {
@@ -479,9 +552,9 @@
             'agogo1': '../assets/sons/agogo 1.mp3',
             'agogo2': '../assets/sons/agogo 2.mp3',
             'agogo3': '../assets/sons/agogo 3.mp3',
-            'tamborim':'../assets/sons/tamborim.mp3',
-            'chocalho':'../assets/sons/chocalho.mp3',
-            'surdosPerola' : '../assets/sons/surdosPerola.mp4',
+            'tamborim': '../assets/sons/tamborim.mp3',
+            'chocalho': '../assets/sons/chocalho.mp3',
+            'surdosPerola': '../assets/sons/surdosPerola.mp4',
             'default': '../assets/sons/default.mp4'
         };
 

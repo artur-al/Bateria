@@ -11,7 +11,8 @@ insert into agremiacao values
     (default, 'Gaviões da fiel', 'grupo especial'),
     (default, 'Pérola Negra', 'grupo de acesso 2'),
     (default, 'Vai-Vai', 'grupo especial'),
-    (default, 'União da ilha', 'grupo especial');
+    (default, 'União da ilha', 'grupo especial'),
+    (default, 'Não tenho', 'sem grupo');
 
 create table if not exists usuario (
     id int primary key auto_increment,
@@ -153,3 +154,23 @@ update levada set instrumento = 'bateria' where instrumento is null;
 set SQL_SAFE_UPDATES = 1;
 alter table levada add column progresso int default 0;
 
+create table if not exists levada_progresso (
+    idprogresso int primary key auto_increment,
+    fklevada int not null,
+    fkuser int not null,
+    progresso int not null,
+    ultima_atualizacao datetime not null,
+    constraint fkprogressolevada foreign key (fklevada) references levada(idlevada),
+    constraint fkprogressouser foreign key (fkuser) references usuario(id),
+    unique key (fklevada, fkuser)
+);
+
+create table if not exists levada_avaliacao (
+    idavaliacao int primary key auto_increment,
+    fklevada int not null,
+    fkuser int not null,
+    avaliacao TINYINT not null check (avaliacao between 1 and 5),
+    data_avaliacao datetime not null,
+    constraint fkavaliacaolevada foreign key (fklevada) references levada(idlevada),
+    constraint fkavaliacaouser foreign key (fkuser) references usuario(id)
+);

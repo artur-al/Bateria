@@ -75,6 +75,25 @@
   font-size: 1.5rem;
 }
 
+.graph {
+  height: 300px;
+  margin-bottom: 30px;
+}
+
+.graficos-container {
+  margin-top: 20px;
+  background: #807d80;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tituloGraficos {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 18px;
+}
+
 .kpi-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
