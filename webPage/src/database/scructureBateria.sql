@@ -164,13 +164,3 @@ create table if not exists levada_progresso (
     constraint fkprogressouser foreign key (fkuser) references usuario(id),
     unique key (fklevada, fkuser)
 );
-
-create table if not exists levada_avaliacao (
-    idavaliacao int primary key auto_increment,
-    fklevada int not null,
-    fkuser int not null,
-    avaliacao TINYINT not null check (avaliacao between 1 and 5),
-    data_avaliacao datetime not null,
-    constraint fkavaliacaolevada foreign key (fklevada) references levada(idlevada),
-    constraint fkavaliacaouser foreign key (fkuser) references usuario(id)
-);
