@@ -17,9 +17,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script> -->
 </head>
 
 <body onload="validarSessao(), carregarDashboard()">
@@ -167,7 +167,7 @@
     }
 
     function atualizarKPI(dados) {
-        const bpmMedio = calcularBPMMedio(levadas);
+        //const bpmMedio = calcularBPMMedio(levadas);
         document.getElementById('kpiContainer').innerHTML = `
         <div class="kpi-card">
             <i class="fas fa-music"></i>
@@ -176,7 +176,7 @@
         </div>
         <div class="kpi-card">
             <i class="fas fa-chart-line"></i>
-            <div class="kpi-value">${bpmMedio || 0}</div>
+            <div class="kpi-value">${dados.bpmMedio || 0}</div>
             <div class="kpi-label">BPM Médio</div>
         </div>
         <div class="kpi-card">
@@ -273,11 +273,14 @@
                 </div>
                 <div class="acoes-levada">
                     <button class="btn-acao" onclick="detalharLevada(${levada.id})">
-                        <i class="fas fa-info-circle"></i> 
+                        <i class="fas fa-info-circle"></i>
                     </button>
-                    <button class="btn-acao" onclick="editarLevada(${levada.id})">
+                    <!-- <button class="btn-acao btn-play" onclick="tocarLevada(${levada.id})">
+                        <i class="fas fa-play"></i> Tocar
+                    </button> -->
+                    <!-- <button class="btn-acao" onclick="editarLevada(${levada.id})">
                         <i class="fas fa-edit"></i> Editar
-                    </button>
+                    </button> -->
                 </div>
             </div>
         `;
@@ -285,6 +288,7 @@
     }
 
     function carregarGraficoDesempenho(levadas) {
+        const bpmMedio = calcularBPMMedio(levadas);
         try {
             const dados = processarDadosParaGrafico(levadas);
             plotarGraficoDesempenho(dados);
@@ -395,21 +399,119 @@
         carregarDashboard();
     }
 
-    let iniciarLevada = {
-        currentLevadaId: null,
-        currentStep: 0,
-        timer: null,
-        iniciarTimer: null,
-        audioContext: null,
-        sons: {}
-    }
-    function tocarLevada(id) {
-        if (iniciarLevada.currentLevadaId === id) {
-            pararLevada();
-            return;
+    let levadaAtual = {
+        emReproducao: false,
+        intervalo: null,
+        progresso: 0,
+        tempoTotal: 0
+    };
+
+    function pararLevada() {
+        if (levadaAtual.intervalo) {
+            clearInterval(levadaAtual.intervalo);
+        }
+        if (levadaAtual.audioContext) {
+            levadaAtual.audioContext.close();
         }
 
-        if (iniciarLevada.currentLevadaId) {
+        document.querySelectorAll('.btn-play').forEach(btn => {
+            btn.innerHTML = '<i class="fas fa-play"></i>';
+        });
+
+        levadaAtual = {
+            emReproducao: false,
+            intervalo: null,
+            progresso: 0,
+            tempoTotal: 0
+        };
+    }
+
+  function iniciarReproducaoSimulada(levadaObj, card) {
+    const startTime = levadaObj.audioContext.currentTime;
+    const progressoBar = card.querySelector('.progresso-bar');
+    const statusElement = card.querySelector('.status');
+    const playButton = card.querySelector('.btn-play');
+
+    if (playButton) playButton.innerHTML = '<i class="fas fa-pause"></i>';
+
+    const normalizarNome = (nome) => {
+        return nome.replace(/[0-9_]/g, '').toLowerCase();
+    };
+
+    levadaObj.padrao.forEach(nota => {
+        const instrNormalizado = normalizarNome(nota.nome);
+        const soundBuffer = levadaObj.sons[nota.nome] || levadaObj.sons[instrNormalizado] || levadaObj.sons.default;
+
+        if (soundBuffer) {
+            const source = levadaObj.audioContext.createBufferSource();
+            source.buffer = soundBuffer;
+            source.connect(levadaObj.audioContext.destination);
+            source.start(startTime + (nota.tempo / 1000));
+        }
+    });
+
+    levadaObj.intervalo = setInterval(() => {
+        const tempoDecorrido = (levadaObj.audioContext.currentTime - startTime) * 1000;
+        levadaObj.progresso = Math.min(100, (tempoDecorrido / levadaObj.tempoTotal) * 100);
+
+        progressoBar.style.width = `${levadaObj.progresso}%`;
+
+        if (statusElement) {
+            const instrumento = levadaObj.instrumento || 'Vários';
+            const bpm = levadaObj.bpm || '0';
+            
+            statusElement.textContent = `${Math.round(levadaObj.progresso)}% • ${instrumento} • ${bpm}BPM`;
+            statusElement.className = `status ${getStatusClass(levadaObj.progresso)}`;
+        }
+
+        if (levadaObj.progresso >= 100) {
+            pararLevada();
+        }
+    }, 50);
+}
+
+    function carregarSons(levadaObj, padrao, card) {
+        const instrumentos = {
+            'surdo1': '../assets/sons/surdo1abafada.mp3',
+            'surdo2': '../assets/sons/surdo2.mp3',
+            'surdo3': '../assets/sons/surdo3.mp3',
+            'caixa': '../assets/sons/caixa.mp3',
+            'agogo1': '../assets/sons/agogo 1.mp3',
+            'agogo2': '../assets/sons/agogo 2.mp3',
+            'agogo3': '../assets/sons/agogo 3.mp3',
+            'tamborim':'../assets/sons/tamborim.mp3',
+            'chocalho':'../assets/sons/chocalho.mp3',
+            'surdosPerola' : '../assets/sons/surdosPerola.mp4',
+            'default': '../assets/sons/default.mp4'
+        };
+
+        const sonsIndv = [...new Set(padrao.map(nota => nota.nome.split('_')[0]))];
+
+        sonsIndv.forEach(instr => {
+            const sonsTocar = instrumentos[instr] || '../assets/sons/default.mp4';
+            fetch(sonsTocar)
+                .then(resposta => resposta.arrayBuffer())
+                .then(arrayBuffer => levadaObj.audioContext.decodeAudioData(arrayBuffer))
+                .then(AudioBuffer => {
+                    levadaObj.sons[instr] = AudioBuffer;
+                })
+                .catch(err => {
+                    console.log(`Erro ao carregar o som ${instr}`, err);
+                });
+
+            setTimeout(() => iniciarReproducaoSimulada(levadaObj, card), 500);
+        }
+
+        )
+    }
+    function tocarLevada(id) {
+        const card = document.querySelector(`.card-levada[data-id="${id}"]`);
+        if (!card) return;
+
+        if (levadaAtual.emReproducao && levadaAtual.id == id) {
+            pararLevada();
+            return;
+        } else if (levadaAtual.emReproducao) {
             pararLevada();
         }
 
@@ -419,106 +521,40 @@
                 const padrao = Array.isArray(levada.padrao) ? levada.padrao : [];
                 if (padrao.length === 0) return;
 
-                iniciarLevada = {
-                    currentLevadaId: id,
-                    currentStep: 0,
-                    timer: null,
-                    iniciarTimer: Date.now(),
+                levadaAtual = {
+                    emReproducao: true,
+                    intervalo: null,
+                    progresso: 0,
+                    tempoTotal: padrao[padrao.length - 1].tempo,
+                    padrao: padrao,
                     audioContext: new (window.AudioContext || window.webkitAudioContext)(),
                     sons: {}
-                };
+                }
 
-                padrao.forEach((nota, index) => {
-                    iniciarLevada.sons[index] = {
-                        nome: nota.nome,
-                        tempo: nota.tempo,
-                        arquivo: nota.arquivo || 'default.mp3' //colocar o caminho da levada puxando do banco ainda
-                    };
-                });
-
-                iniciarReproducao(padrao, id);
+                carregarSons(levadaAtual, padrao, card);
             })
             .catch(error => {
                 console.error('Erro ao carregar levada:', error);
-                exibirMensagemErro('Erro ao carregar levada para reprodução');
+                exibirMensagemErro('Erro ao carregar padrão da levada');
             });
     }
 
-    function iniciarReproducao(padrao, id) {
-        const card = document.querySelector(`.card-levada[data-id="${id}"]`);
-        const progressBar = card.querySelector(`#progressBar-${id}`);
-        const timeDisplay = card.querySelector(`#timeDisplay-${id}`);
 
-        const playButton = card.querySelector('.btn-play');
-        playButton.innerHTML = '<i class="fas fa-pause"></i>';
-
-        const duracaoTotal = padrao[padrao.length - 1].tempo - padrao[0].tempo;
-
-        const atualizarProgresso = () => {
-            const tempoDecorrido = Date.now() - iniciarLevada.iniciarTimer;
-            const progresso = Math.min(100, (tempoDecorrido / duracaoTotal) * 100);
-
-            progressBar.style.width = `${progresso}%`;
-
-            const segundos = Math.floor(tempoDecorrido / 1000);
-            timeDisplay.textContent = `${Math.floor(segundos / 60)}:${(segundos % 60).toString().padStart(2, '0')}`;
-
-            padrao.forEach((nota, index) => {
-                if (nota.tempo <= tempoDecorrido && !iniciarLevada.sons[index].tocada) {
-                    tocarNota(nota);
-                    iniciarLevada.sons[index].tocada = true;
-
-                    const progressoCard = Math.round(((index + 1) / padrao.length) * 100);
-                    card.querySelector('.progresso-bar').style.width = `${progressoCard}%`;
-                    card.querySelector('.status').textContent = `${progressoCard}% • ${levada.instrumento} • ${levada.bpm}BPM`;
-                }
-            });
-
-            if (tempoDecorrido < duracaoTotal) {
-                iniciarLevada.timer = requestAnimationFrame(atualizarProgresso);
-            } else {
-                pararLevada();
-                progressBar.style.width = '100%';
-                timeDisplay.textContent = 'Concluído';
-                playButton.innerHTML = '<i class="fas fa-redo"></i>';
-            }
-        };
-
-        iniciarLevada.timer = requestAnimationFrame(atualizarProgresso);
-    }
-
-    function tocarNota(nota) {
-        console.log(`Tocando: ${nota.nome} em ${nota.tempo}ms`);
-        if (nota.arquivo) {
-            const audio = new Audio(`/sons/${nota.arquivo}`);
-            audio.play().catch(e => console.error("Erro ao reproduzir áudio:", e));
-        }
-    }
 
     function pararLevada() {
-        if (iniciarLevada.timer) {
-            cancelAnimationFrame(iniciarLevada.timer);
+        if (levadaAtual.intervalo) {
+            clearInterval(levadaAtual.intervalo);
         }
-        if (iniciarLevada.audioContext) {
-            iniciarLevada.audioContext.close();
-        }
-
-        if (iniciarLevada.currentLevadaId) {
-            const card = document.querySelector(`.card-levada[data-id="${iniciarLevada.currentLevadaId}"]`);
-            if (card) {
-                const playButton = card.querySelector('.btn-play');
-                if (playButton) playButton.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        }
-
-        iniciarLevada = {
-            currentLevadaId: null,
-            currentStep: 0,
-            timer: null,
-            iniciarTimer: null,
-            audioContext: null,
-            sons: {}
+        levadaAtual = {
+            emReproducao: false,
+            intervalo: null,
+            progresso: 0,
+            tempoTotal: 0
         };
+
+        document.querySelectorAll('.btn-play').forEach(btn => {
+            btn.innerHTML = '<i class="fas fa-play"></i>';
+        });
     }
 
     function detalharLevada(id) {

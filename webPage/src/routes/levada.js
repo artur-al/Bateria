@@ -6,14 +6,14 @@ router.get("/usuario/:idUsuario", levadaController.buscarLevadasPorUsuario);
 router.post("/cadastrar", levadaController.cadastrar);
 router.get("/agremiacao/:idAgremiacao", levadaController.buscarPorAgremiacao);
 router.get("/kpis",levadaController.buscarKPIs);
-
 router.get("/listar", levadaController.listarTodas);
-router.get("/detalhes/:idLevada", levadaController.buscarPorId); 
-router.put("/atualizar/:idLevada", levadaController.atualizar); 
-router.delete("/remover/:idLevada", levadaController.remover); 
 
-router.post("/:id/iniciar", levadaController.iniciarReproducao);
-router.post("/:id/pausar", levadaController.pausarReproducao);
-router.get("/:id/progresso", levadaController.verificarProgresso);
+router.get("/:idLevada", levadaController.buscarPorId); 
+router.put("/:idLevada", levadaController.atualizar);
+router.delete("/:idLevada", levadaController.remover);
+
+router.post("/:idLevada/reproduzir/iniciar", levadaController.iniciarReproducao);
+router.post("/:idLevada/reproduzir/pausar", levadaController.pausarReproducao);
+router.get("/:idLevada/reproduzir/progresso", levadaController.verificarProgresso);
 
 module.exports = router;

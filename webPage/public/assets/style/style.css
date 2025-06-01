@@ -130,19 +130,19 @@ main {
 }
 
 #caixa:hover {
-  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
 .card.tamborim img {
-  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
 
 .card.primeira img {
-  cursor: url('../baquetaSurdo.png') 16 16, auto;
+  cursor: url('../img/baquetaSurdo.png') 16 16, auto;
 }
 
 .card.segunda img {
-  cursor: url('../baquetaSurdo.png') 16 16, auto;
+  cursor: url('../img/baquetaSurdo.png') 16 16, auto;
 }
 
 .card.chocalho img {
@@ -150,7 +150,7 @@ main {
 }
 
 .card.terceira img {
-  cursor: url('../baquetaSurdo.png') 16 16, auto;
+  cursor: url('../img/baquetaSurdo.png') 16 16, auto;
 }
 
 .imagem-interativa {
@@ -184,7 +184,7 @@ main {
   width: 50%;
   height: 50%;
   z-index: 10;
-  cursor: url('../baquetaCaixa-removebg-preview.png') 16 16, auto;
+  cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
   background-color: rgba(255, 0, 0, 0.1);
 }
 
@@ -617,7 +617,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .campo-agremiacao::after {
-  content: "✏️";
+  /* content: "✏️"; */
   position: absolute;
   right: 10px;
   top: 35px;
