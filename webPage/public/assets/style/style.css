@@ -132,7 +132,9 @@ main {
 #caixa:hover {
   cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }
-
+.card.agogo img{
+  cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
+}
 .card.tamborim img {
   cursor: url('../img/baquetaCaixa-removebg-preview.png') 16 16, auto;
 }

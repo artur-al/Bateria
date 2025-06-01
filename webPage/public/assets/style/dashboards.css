@@ -66,20 +66,12 @@
 }
 
 .graph {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.tituloGraficos {
-  color: #e3b062;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-.graph {
   height: 300px;
   margin-bottom: 30px;
+  display: flex;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+  
 .graficos-container {
   margin-top: 20px;
   background: #807d80;
@@ -92,6 +84,12 @@
   margin-bottom: 15px;
   color: #333;
   font-size: 18px;
+}
+
+.graficoNotas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kpi-container {

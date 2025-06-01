@@ -22,13 +22,13 @@
         <h2>Olá Usuario</h2>
         <p>Aqui você pode além de desenvolver as levadas você pode salvar elas</p>
     </div>
-    <select id="select-agremiacao">
+    <!-- <select id="select-agremiacao">
         <option value="">Nenhuma agremiação</option>
         <option value="1">Gaviões da Fiel</option>
         <option value="2">Pérola Negra</option>
         <option value="3">Vai-Vai</option>
         <option value="4">União da Ilha</option>
-    </select>
+    </select> -->
     <div class="controles-gravacao">
         <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
         <button onclick="reproduzirGravacao()">Reproduzir<br> (R)</button>
@@ -36,13 +36,13 @@
     </div>
     <div class="cards-container">
         <div class="card agogo">
-            <div class="imagem-interativa">
-                <img src="../assets/img/agogo.webp" alt="agogo" id="agogozona">
-                <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
+            <img src="../assets/img/agogo.webp" alt="agogo" onclick="tocarSom('agogo')">
+            <!-- <div class="imagem-interativa">
+               <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
                 <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
-                <div class="zona zona3" onclick="tocarSom('agogo3')"></div>
-                <!-- <div class="zona zona4" onclick="tocarSom('agogo4')"></div>                       -->
-            </div>
+                <div class="zona zona3" onclick="tocarSom('agogo3')"></div> 
+                <div class="zona zona4" onclick="tocarSom('agogo4')"></div>                       
+            </div> -->
         </div>
 
         <div class="card caixa">
@@ -70,6 +70,7 @@
     <audio src="../assets/sons/agogo 1.mp3" id="agogo1"></audio>
     <audio src="../assets/sons/agogo 2.mp3" id="agogo2"></audio>
     <audio src="../assets/sons/agogo 3.mp3" id="agogo3"></audio>
+    <audio src="../assets/sons/agogo.mp3" id="agogo"></audio>
     <audio src="../assets/sons/surdo1.mp3" id="surdo1"></audio>
     <audio src="../assets/sons/surdo1abafada.mp3" id="surdo1abafado"></audio>
     <audio src="../assets/sons/caixa.mp3" id="caixa1"></audio>
@@ -136,7 +137,7 @@
             reproduzirGravacao();
         }
 
-        if(tecla == "s"){
+        if (tecla == "s") {
             salvarLevada();
         }
     }
@@ -174,7 +175,7 @@
 
             if (response.ok) {
                 alert('Levada salva!');
-                window.location.href ='dash.html';
+                window.location.href = 'dash.html';
             }
         } catch (error) {
             console.error(error);
