@@ -22,13 +22,16 @@
         <h2>Olá Usuario</h2>
         <p>Aqui você pode além de desenvolver as levadas você pode salvar elas</p>
     </div>
-    <!-- <select id="select-agremiacao">
-        <option value="">Nenhuma agremiação</option>
-        <option value="1">Gaviões da Fiel</option>
-        <option value="2">Pérola Negra</option>
-        <option value="3">Vai-Vai</option>
-        <option value="4">União da Ilha</option>
-    </select> -->
+    <div class="select-container">
+        <label for="select-agremiacao" class="select-label">Escola de Samba</label>
+        <select id="select-agremiacao">
+            <option value="">Nenhuma agremiação</option>
+            <option value="1">Gaviões da Fiel</option>
+            <option value="2">Pérola Negra</option>
+            <option value="3">Vai-Vai</option>
+            <option value="4">União da Ilha</option>
+        </select>
+    </div>
     <div class="controles-gravacao">
         <button onclick="alternarGravacao()">Iniciar/Parar Gravação (X)</button>
         <button onclick="reproduzirGravacao()">Reproduzir<br> (R)</button>
@@ -36,7 +39,7 @@
     </div>
     <div class="cards-container">
         <div class="card agogo">
-            <img src="../assets/img/agogo.webp" alt="agogo" onclick="tocarSom('agogo')">
+            <img src="../assets/img/agogo.webp" alt="https://contemporaneamusical.com.br" onclick="tocarSom('agogo')">
             <!-- <div class="imagem-interativa">
                <div class="zona zona1" onclick="tocarSom('agogo1')"></div>
                 <div class="zona zona2" onclick="tocarSom('agogo2')"></div>
@@ -46,23 +49,28 @@
         </div>
 
         <div class="card caixa">
-            <img src="../assets/img/caixa3.png" alt="caixa" id="caixa" onclick="tocarSom('caixa1')">
+            <img src="../assets/img/caixa3.png" alt="https://www.gope.net/caixa" id="caixa"
+                onclick="tocarSom('caixa1')">
         </div>
         <div class="card chocalho">
-            <img src="../assets/img/chocalho.png" alt="chocalho" onclick="tocarSom('chocalho')">
+            <img src="../assets/img/chocalho.png" alt="https://www.gope.net/chocalho" onclick="tocarSom('chocalho')">
+        </div>
+        <div class="card tamborim">
+            <img src="../assets/img/tamborim.png" alt="https://www.gope.net/tamborim" onclick="tocarSom('tamborim')">
         </div>
         <div class="card primeira">
-            <img src="../assets/img/primeira2.png" alt="primeira" id="surdos" onclick="tocarSom('surdo1abafado')">
+            <img src="../assets/img/primeira2.png" alt="https://ivsominstrumentos.com.br/surdo/" id="surdos"
+                onclick="tocarSom('surdo1abafado')">
             <!-- <div class="zona zona1" onclick="tocarSom('surdo1')"></div> -->
         </div>
         <div class="card segunda">
-            <img src="../assets/img/segunda.png" alt="segunda" id="surdos" onclick="tocarSom('surdo2')">
-        </div>
-        <div class="card tamborim">
-            <img src="../assets/img/tamborim.png" alt="tamborim" onclick="tocarSom('tamborim')">
+            <img src="../assets/img/segunda.png"
+                alt="https://www.izzo.com.br/surdo-timbra-22--x-40-cm-aluminio-azul-claro/p" id="surdos"
+                onclick="tocarSom('surdo2')">
         </div>
         <div class="card terceira">
-            <img src="../assets/img/terceira.png" alt="terceira" id="surdos" onclick="tocarSom('surdo3')">
+            <img src="../assets/img/terceira.png" alt="https://www.gope.net/surdo" id="surdos"
+                onclick="tocarSom('surdo3')">
         </div>
     </div>
     </section>

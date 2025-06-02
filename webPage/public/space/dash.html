@@ -2,7 +2,6 @@
 <html lang="pt-br">
 
 <head>
-    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,12 +164,12 @@
                 const levadasFormatadas = processarLevadas(levadas);
                 exibirCardsLevadas(levadasFormatadas);
                 carregarGraficoDesempenho(levadasFormatadas);
-                return levadasFormatadas; 
+                return levadasFormatadas;
             })
             .catch(error => {
                 console.error('Erro ao carregar levadas:', error);
                 exibirMensagemErro('Não foi possível carregar as levadas');
-                return []; 
+                return [];
             });
     }
 
@@ -259,7 +258,6 @@
 
     function exibirCardsLevadas(levadas) {
         const container = document.getElementById('cardsLevadas');
-        container.innerHTML = '';
 
         if (levadas.length === 0) {
             container.innerHTML = `
@@ -270,39 +268,39 @@
             return;
         }
 
-        levadas.forEach(levada => {
-            container.innerHTML += `
-            <div class="card-levada" data-id="${levada.id}">
-                <div class="header-levada">
-                    <h2>${levada.nome}</h2>
-                    <span class="status ${getStatusClass(levada.progresso)}">
-                        ${levada.progresso}% • ${levada.instrumento} • ${levada.bpm}BPM
-                    </span>
+        let cardsHTML = '';
+
+        for (let i = 0; i < levadas.length; i++) {
+            const levada = levadas[i];
+
+            cardsHTML += `
+        <div class="card-levada" data-id="${levada.id}">
+            <div class="header-levada">
+                <h2>${levada.nome}</h2>
+                <span class="status ${getStatusClass(levada.progresso)}">
+                    ${levada.progresso}% • ${levada.instrumento} • ${levada.bpm}BPM
+                </span>
+            </div>
+            <div class="detalhes-levada">
+                <div class="info">
+                    <p><strong>Agremiação:</strong> ${levada.agremiacao || 'Não especificado'}</p>
+                    <p><strong>Criada em:</strong> ${formatarData(levada.dataCriacao)}</p>
+                    <p><strong>Notas:</strong> ${levada.padrao.length} (${levada.padrao.filter(n => n.completa).length} completas)</p>
                 </div>
-                <div class="detalhes-levada">
-                    <div class="info">
-                        <p><strong>Agremiação:</strong> ${levada.agremiacao || 'Não especificado'}</p>
-                        <p><strong>Criada em:</strong> ${formatarData(levada.dataCriacao)}</p>
-                        <p><strong>Notas:</strong> ${levada.padrao.length} (${levada.padrao.filter(n => n.completa).length} completas)</p>
-                    </div>
-                    <div class="progresso">
-                        <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
-                    </div>
-                </div>
-                <div class="acoes-levada">
-                    <button class="btn-acao" onclick="detalharLevada(${levada.id})">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                    <!-- <button class="btn-acao btn-play" onclick="tocarLevada(${levada.id})">
-                        <i class="fas fa-play"></i> Tocar
-                    </button> -->
-                    <!-- <button class="btn-acao" onclick="editarLevada(${levada.id})">
-                        <i class="fas fa-edit"></i> Editar
-                    </button> -->
+                <div class="progresso">
+                    <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
                 </div>
             </div>
+            <div class="acoes-levada">
+                <button class="btn-acao" onclick="detalharLevada(${levada.id})">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+            </div>
+        </div>
         `;
-        });
+        }
+
+        container.innerHTML = cardsHTML;
     }
 
     function carregarGraficoDesempenho(levadas) {
