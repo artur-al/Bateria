@@ -482,8 +482,8 @@
             tempoTotal: 0
         };
     }
-/*
-    function iniciarReproducaoSimulada(levadaObj, card) {
+
+    function iniciarReproducao(levadaObj, card) {
         const startTime = levadaObj.audioContext.currentTime;
         const progressoBar = card.querySelector('.progresso-bar');
         const statusElement = card.querySelector('.status');
@@ -526,7 +526,7 @@
             }
         }, 50);
     }
-*/
+
     function carregarSons(levadaObj, padrao, card) {
         const instrumentos = {
             'surdo1': '../assets/sons/surdo1abafada.mp3',
@@ -556,7 +556,7 @@
                     console.log(`Erro ao carregar o som ${instr}`, err);
                 });
 
-            setTimeout(() => iniciarReproducaoSimulada(levadaObj, card), 500);
+            setTimeout(() => iniciarReproducao(levadaObj, card), 500);
         }
 
         )
