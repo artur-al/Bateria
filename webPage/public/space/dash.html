@@ -274,28 +274,28 @@
             const levada = levadas[i];
 
             cardsHTML += `
-        <div class="card-levada" data-id="${levada.id}">
-            <div class="header-levada">
-                <h2>${levada.nome}</h2>
-                <span class="status ${getStatusClass(levada.progresso)}">
-                    ${levada.progresso}% • ${levada.instrumento} • ${levada.bpm}BPM
-                </span>
-            </div>
-            <div class="detalhes-levada">
-                <div class="info">
-                    <p><strong>Agremiação:</strong> ${levada.agremiacao || 'Não especificado'}</p>
-                    <p><strong>Criada em:</strong> ${formatarData(levada.dataCriacao)}</p>
-                    <p><strong>Notas:</strong> ${levada.padrao.length} (${levada.padrao.filter(n => n.completa).length} completas)</p>
+            <div class="card-levada" data-id="${levada.id}">
+                <div class="header-levada">
+                    <h2>${levada.nome}</h2>
+                    <span class="status ${getStatusClass(levada.progresso)}">
+                        ${levada.progresso}% • ${levada.instrumento} • ${levada.bpm}BPM
+                    </span>
                 </div>
-                <div class="progresso">
-                    <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
+                <div class="detalhes-levada">
+                    <div class="info">
+                        <p><strong>Agremiação:</strong> ${levada.agremiacao || 'Não especificado'}</p>
+                        <p><strong>Criada em:</strong> ${formatarData(levada.dtcriacao)}</p>
+                        <p><strong>Notas:</strong> ${levada.padrao.length} (${levada.padrao.filter(n => n.completa).length} completas)</p>
+                    </div>
+                    <div class="progresso">
+                        <div class="progresso-bar" style="width: ${levada.progresso}%"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="acoes-levada">
-                <button class="btn-acao" onclick="detalharLevada(${levada.id})">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-            </div>
+                <div class="acoes-levada">
+                    <button class="btn-acao" onclick="detalharLevada(${levada.id})">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
         </div>
         `;
         }
@@ -482,7 +482,7 @@
             tempoTotal: 0
         };
     }
-
+/*
     function iniciarReproducaoSimulada(levadaObj, card) {
         const startTime = levadaObj.audioContext.currentTime;
         const progressoBar = card.querySelector('.progresso-bar');
@@ -526,7 +526,7 @@
             }
         }, 50);
     }
-
+*/
     function carregarSons(levadaObj, padrao, card) {
         const instrumentos = {
             'surdo1': '../assets/sons/surdo1abafada.mp3',
